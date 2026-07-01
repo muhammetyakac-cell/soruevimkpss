@@ -1,0 +1,128 @@
+{
+  "id": "turkce",
+  "category": "Türkçe",
+  "icon": "📖",
+  "description": "Sözcükte anlam, cümlede anlam, paragraf ve dil bilgisi.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Aşağıdaki cümlelerin hangisinde yazım yanlışı vardır?",
+      "options": [
+        "A) Herkez bu durumdan oldukça memnundu.",
+        "B) Herkes bu duruma çok sevindi.",
+        "C) Olaylar herkesin gözü önünde oldu.",
+        "D) Herkese benden çay!"
+      ],
+      "correctAnswer": 0,
+      "explanation": "'Herkes' kelimesi sert ünsüzle (s) biter, 'herkez' şeklinde yazılması yazım yanlışıdır."
+    },
+    {
+      "id": 2,
+      "question": "Aşağıdakilerin hangisinde ünsüz benzeşmesi (sertleşmesi) kuralına uyulmamıştır?",
+      "options": [
+        "A) Kitapta yazılanları dikkatle okudu.",
+        "B) Sokakdan geçen satıcıya seslendi.",
+        "C) Çalışkan öğrenciler her zaman başarır.",
+        "D) Seçkin konuklar salona alındı."
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sert ünsüzle biten 'sokak' kelimesine gelen '-dan' eki sertleşerek '-tan' olmalıdır (Sokaktan)."
+    },
+    {
+      "id": 3,
+      "question": "'O kadar yoruldum ki adım atacak hâlim kalmadı.' cümlesinde hangi söz sanatı vardır?",
+      "options": [
+        "A) Benzetme",
+        "B) Kişileştirme",
+        "C) Abartma",
+        "D) Karşıtlık"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Yorgunluğun derecesi abartılarak (mübalağa) ifade edilmiştir."
+    },
+    {
+      "id": 4,
+      "question": "Aşağıdaki cümlelerin hangisinde nesne eksikliğinden kaynaklanan bir anlatım bozukluğu vardır?",
+      "options": [
+        "A) Ona her zaman güvenir, desteklerim.",
+        "B) Bu konuyu çok düşündüm ama işin içinden çıkamadım.",
+        "C) Sizi arayacaktım fakat telefonumun şarjı bitti.",
+        "D) Eve geldim, hemen uyudum."
+      ],
+      "correctAnswer": 0,
+      "explanation": "'Ona güvenir' (kime? - ona), ancak 'desteklerim' fiili için 'onu' (kimi?) nesnesi gerekir. Doğrusu: 'Ona her zaman güvenir, onu desteklerim.'"
+    },
+    {
+      "id": 5,
+      "question": "Hangi cümlede 'ki' bağlacının yazımı yanlıştır?",
+      "options": [
+        "A) Anladım ki bu iş böyle olmayacak.",
+        "B) Evdeki hesap çarşıya uymadı.",
+        "C) O kadar güzelki anlatamam.",
+        "D) Mademki gelmeyecektin, neden haber vermedin?"
+      ],
+      "correctAnswer": 2,
+      "explanation": "'O kadar güzel ki' şeklinde ayrı yazılmalıdır. Bağlaç olan 'ki' her zaman ayrı yazılır (kalıplaşmış olanlar hariç)."
+    },
+    {
+      "id": 6,
+      "question": "'Yüzmek' kelimesi aşağıdaki cümlelerin hangisinde mecaz anlamda kullanılmıştır?",
+      "options": [
+        "A) Havuzda bir saat yüzdü.",
+        "B) Borç içinde yüzüyor.",
+        "C) Koyunun derisini yüzdüler.",
+        "D) Suya dalıp yüzmeye başladı."
+      ],
+      "correctAnswer": 1,
+      "explanation": "'Borç içinde yüzmek' gerçek anlamıyla suda ilerlemek değil, çok borcu olmak anlamında mecazdır."
+    },
+    {
+      "id": 7,
+      "question": "Aşağıdaki cümlelerin hangisinde dolaylı tümleç yoktur?",
+      "options": [
+        "A) Dün akşam onu parkta gördüm.",
+        "B) Masanın üzerindeki kitapları dolaba koydu.",
+        "C) Sabaha kadar durmaksızın yürüdük.",
+        "D) Bu konuyu arkadaşlarıma danışacağım."
+      ],
+      "correctAnswer": 2,
+      "explanation": "'Sabaha kadar' (zarf tümleci), 'durmaksızın' (zarf tümleci), 'yürüdük' (yüklem). Dolaylı tümleç (kime, nerede, nereden vb. soruların cevabı) yoktur."
+    },
+    {
+      "id": 8,
+      "question": "Aşağıdaki sözcüklerden hangisi yapısı bakımından birleşiktir?",
+      "options": [
+        "A) Gözlükçü",
+        "B) Bilgisayar",
+        "C) Kitaplık",
+        "D) Odalar"
+      ],
+      "correctAnswer": 1,
+      "explanation": "'Bilgisayar', 'bilgi' ve 'sayar' sözcüklerinin birleşmesiyle oluşmuş birleşik bir kelimedir."
+    },
+    {
+      "id": 9,
+      "question": "Hangi cümlede noktalama yanlışı yapılmıştır?",
+      "options": [
+        "A) Hey, buraya baksana!",
+        "B) Yarın Ankara'ya gideceğim.",
+        "C) Neden böyle davrandığını? bilmiyorum.",
+        "D) Elma, armut, muz aldım."
+      ],
+      "correctAnswer": 2,
+      "explanation": "'Neden böyle davrandığını bilmiyorum.' cümlesi soru cümlesi değildir, bu yüzden soru işareti (?) konulmaz."
+    },
+    {
+      "id": 10,
+      "question": "Aşağıdaki deyimlerden hangisi 'çok sevinmek' anlamındadır?",
+      "options": [
+        "A) Etekleri tutuşmak",
+        "B) Etekleri zil çalmak",
+        "C) Gözdağı vermek",
+        "D) Göze girmek"
+      ],
+      "correctAnswer": 1,
+      "explanation": "'Etekleri zil çalmak' çok sevinmek anlamına gelir. 'Etekleri tutuşmak' ise telaşlanmak demektir."
+    }
+  ]
+}

@@ -1,0 +1,128 @@
+{
+  "id": "vatandaslik",
+  "category": "Vatandaşlık",
+  "icon": "⚖️",
+  "description": "Anayasa hukuku, idare hukuku ve temel hukuk kavramları.",
+  "questions": [
+    {
+      "id": 1,
+      "question": "Türkiye Cumhuriyeti Anayasası'na göre yasama yetkisi kime aittir?",
+      "options": [
+        "A) Cumhurbaşkanı",
+        "B) Türkiye Büyük Millet Meclisi (TBMM)",
+        "C) Anayasa Mahkemesi",
+        "D) Yargıtay"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Yasama yetkisi Türk milleti adına TBMM'ye aittir ve bu yetki devredilemez."
+    },
+    {
+      "id": 2,
+      "question": "1982 Anayasası'na göre milletvekili seçilebilme yaşı kaçtır?",
+      "options": [
+        "A) 18",
+        "B) 21",
+        "C) 25",
+        "D) 30"
+      ],
+      "correctAnswer": 0,
+      "explanation": "2017 anayasa değişikliği ile milletvekili seçilebilme yaşı 25'ten 18'e düşürülmüştür."
+    },
+    {
+      "id": 3,
+      "question": "Aşağıdakilerden hangisi temel hak ve hürriyetlerin sınırlandırılması sebeplerinden biri olamaz?",
+      "options": [
+        "A) Milli güvenlik",
+        "B) Kamu düzeni",
+        "C) Genel ahlak",
+        "D) Siyasi görüş farklılığı"
+      ],
+      "correctAnswer": 3,
+      "explanation": "Siyasi görüş farklılığı, anayasada belirtilen sınırlandırma sebeplerinden biri değildir."
+    },
+    {
+      "id": 4,
+      "question": "Normlar hiyerarşisinde en üstte yer alan norm aşağıdakilerden hangisidir?",
+      "options": [
+        "A) Kanun",
+        "B) Cumhurbaşkanlığı Kararnamesi",
+        "C) Anayasa",
+        "D) Yönetmelik"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Hukuk sistemimizde normlar hiyerarşisinin (Kelsen hiyerarşisi) en tepesinde Anayasa bulunur."
+    },
+    {
+      "id": 5,
+      "question": "Türk Borçlar Kanunu'na göre, bir sözleşmenin geçerli olabilmesi için ehliyet açısından gerekli olan asgari şart nedir?",
+      "options": [
+        "A) Hak ehliyeti",
+        "B) Fiil ehliyeti",
+        "C) Siyasi ehliyet",
+        "D) Mali ehliyet"
+      ],
+      "correctAnswer": 1,
+      "explanation": "Sözleşme kurabilmek için kişilerin fiil ehliyetine (ayırt etme gücüne sahip olma, ergin olma, kısıtlı olmama) sahip olması gerekir."
+    },
+    {
+      "id": 6,
+      "question": "Türkiye'de Anayasa Mahkemesi üyeleri kim tarafından seçilir?",
+      "options": [
+        "A) Sadece Cumhurbaşkanı",
+        "B) Sadece TBMM",
+        "C) TBMM ve Cumhurbaşkanı",
+        "D) Yargıtay ve Danıştay"
+      ],
+      "correctAnswer": 2,
+      "explanation": "Anayasa Mahkemesi'nin 15 üyesinin 3'ünü TBMM, 12'sini Cumhurbaşkanı seçer."
+    },
+    {
+      "id": 7,
+      "question": "İdarenin işlem ve eylemlerine karşı yargı yolu açıktır ilkesi hangi devlet ilkesinin gereğidir?",
+      "options": [
+        "A) Sosyal Devlet",
+        "B) Demokratik Devlet",
+        "C) Laik Devlet",
+        "D) Hukuk Devleti"
+      ],
+      "correctAnswer": 3,
+      "explanation": "İdarenin yargı denetimine tabi olması Hukuk Devleti ilkesinin en temel özelliğidir."
+    },
+    {
+      "id": 8,
+      "question": "Aşağıdakilerden hangisi yerel (mahalli) idarelerden biri değildir?",
+      "options": [
+        "A) İl Özel İdaresi",
+        "B) Belediye İdaresi",
+        "C) Köy İdaresi",
+        "D) Kaymakamlık"
+      ],
+      "correctAnswer": 3,
+      "explanation": "Kaymakamlık, merkezi idarenin taşra teşkilatıdır (ilçe idaresi). Diğerleri yerel (mahalli) idare birimleridir."
+    },
+    {
+      "id": 9,
+      "question": "Ölüm karinesi durumunda, kaybolan kişinin mülkiyet haklarının mirasçılara geçmesi için geçmesi gereken yasal süre ne kadardır?",
+      "options": [
+        "A) Süre şartı yoktur, derhal geçer.",
+        "B) 1 yıl",
+        "C) 5 yıl",
+        "D) 10 yıl"
+      ],
+      "correctAnswer": 0,
+      "explanation": "Ölüm karinesinde (ölümüne kesin gözle bakılacak bir durumda kaybolma) gaiplikten farklı olarak bekleme süresi yoktur; kişi ölmüş kabul edilir ve miras derhal geçer."
+    },
+    {
+      "id": 10,
+      "question": "Türkiye Cumhuriyeti Devletinin şekli 'Cumhuriyettir' hükmü Anayasa'nın kaçıncı maddesidir?",
+      "options": [
+        "A) 1. Madde",
+        "B) 2. Madde",
+        "C) 3. Madde",
+        "D) 4. Madde"
+      ],
+      "correctAnswer": 0,
+      "explanation": "1982 Anayasası Madde 1: Türkiye Devleti bir Cumhuriyettir."
+    }
+  ]
+}
