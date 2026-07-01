@@ -1,6 +1,7 @@
 // App Module (Main)
 const App = (function() {
     let currentCategory = null;
+    let currentTestIndex = null;
     let categoriesData = {}; // Kategori listesi (kısa veriler)
     let fullQuestionsData = {}; // Her kategorinin soruları (lazy load için şimdilik bellekte tutuyoruz)
     let timerMode = 'none';
@@ -88,13 +89,44 @@ const App = (function() {
 
     function openSettingsModal(categoryId) {
         currentCategory = categoriesData[categoryId];
-        document.getElementById('modal-category-title').innerText = `${currentCategory.title} Testi Ayarları`;
+        document.getElementById('modal-category-title').innerText = `${currentCategory.title} Test Seçimi`;
         modal.classList.add('active');
         
         // Sadece ana sayfadan tıklanarak açıldıysa URL'yi güncelle
         if (window.location.pathname === '/') {
              history.pushState(null, '', `/kategori/${categoryId}`);
              setSEO(`${currentCategory.title} KPSS Testleri - SoruEvim`, currentCategory.description);
+        }
+
+        renderTestList();
+    }
+
+    function renderTestList() {
+        const container = document.getElementById('test-list-container');
+        container.innerHTML = '';
+        
+        const totalTests = Math.ceil(currentCategory.totalQuestions / 10);
+        const solvedTests = Storage.getSolvedTests(currentCategory.id);
+
+        if (totalTests === 0) {
+            container.innerHTML = '<p class="text-muted" style="text-align:center;">Bu kategoriye ait henüz test bulunmuyor.</p>';
+            return;
+        }
+
+        for (let i = 0; i < totalTests; i++) {
+            const isSolved = solvedTests.includes(i);
+            const btn = document.createElement('button');
+            btn.className = `btn-outline ${isSolved ? 'solved-test-btn' : ''}`;
+            btn.style.width = '100%';
+            btn.style.display = 'flex';
+            btn.style.justifyContent = 'space-between';
+            btn.style.alignItems = 'center';
+            btn.innerHTML = `
+                <span>Deneme ${i + 1}</span>
+                <span>${isSolved ? '✅ Çözüldü' : '▶ Başla'}</span>
+            `;
+            btn.onclick = () => startTestBatch(i, btn);
+            container.appendChild(btn);
         }
     }
 
@@ -106,15 +138,14 @@ const App = (function() {
         }
     }
 
-    async function startQuiz(e) {
-        e.preventDefault();
-        
-        const qCount = document.getElementById('setting-question-count').value;
+    // Butona tıklanınca testi başlatır
+    async function startTestBatch(testIndex, btnElement) {
+        currentTestIndex = testIndex;
         const tMode = document.getElementById('setting-timer-mode').value;
-        const submitBtn = document.querySelector('#quiz-settings-form button[type="submit"]');
-        const originalText = submitBtn.innerText;
-        submitBtn.innerText = 'Yükleniyor...';
-        submitBtn.disabled = true;
+        const originalHtml = btnElement.innerHTML;
+        
+        btnElement.innerHTML = '<span>Yükleniyor...</span>';
+        btnElement.disabled = true;
 
         try {
             // API'den soruları çek (önbellekte yoksa)
@@ -124,15 +155,25 @@ const App = (function() {
                 fullQuestionsData[currentCategory.id] = await response.json();
             }
 
+            // 10'lu dilimi al
+            const startIndex = testIndex * 10;
+            const endIndex = startIndex + 10;
+            const testQuestions = fullQuestionsData[currentCategory.id].slice(startIndex, endIndex);
+
+            if (testQuestions.length === 0) {
+                alert('Bu testte soru bulunamadı.');
+                return;
+            }
+
             closeSettingsModal();
             
             timerMode = tMode === 'none' ? 'none' : 'question';
             timerDuration = tMode === 'none' ? 0 : parseInt(tMode);
             
-            document.getElementById('quiz-title').innerText = `${currentCategory.icon} ${currentCategory.title} Testi`;
+            document.getElementById('quiz-title').innerText = `${currentCategory.icon} ${currentCategory.title} - Deneme ${testIndex + 1}`;
             
-            // Quiz modülünü başlat
-            Quiz.init(fullQuestionsData[currentCategory.id], qCount);
+            // Quiz modülünü başlat (Sorular testQuestions olacak)
+            Quiz.init(testQuestions, testQuestions.length);
             
             // Timer'ı başlat
             quizStartTime = Date.now();
@@ -154,14 +195,14 @@ const App = (function() {
                 }
             );
 
-            history.pushState(null, '', `/test/${currentCategory.id}`);
+            history.pushState(null, '', `/test/${currentCategory.id}/${testIndex + 1}`);
             navigateTo('quiz');
         } catch (error) {
             console.error('Failed to load questions', error);
             alert('Sorular yüklenirken bir hata oluştu.');
         } finally {
-            submitBtn.innerText = originalText;
-            submitBtn.disabled = false;
+            btnElement.innerHTML = originalHtml;
+            btnElement.disabled = false;
         }
     }
 
@@ -177,7 +218,8 @@ const App = (function() {
             correct: results.correct,
             wrong: results.wrong,
             empty: results.empty,
-            timeSpent: timeSpent
+            timeSpent: timeSpent,
+            testIndex: currentTestIndex // Hangi testin çözüldüğü bilgisi
         });
         
         // UI Güncelle
@@ -241,7 +283,7 @@ const App = (function() {
 
     // Event Listeners
     document.getElementById('btn-close-modal').addEventListener('click', closeSettingsModal);
-    document.getElementById('quiz-settings-form').addEventListener('submit', startQuiz);
+    document.getElementById('quiz-settings-form').addEventListener('submit', (e) => e.preventDefault());
     document.getElementById('btn-quit-quiz').addEventListener('click', quitQuiz);
     document.getElementById('btn-restart-quiz').addEventListener('click', () => {
         history.pushState(null, '', `/kategori/${currentCategory.id}`);

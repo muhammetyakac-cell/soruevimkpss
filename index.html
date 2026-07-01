@@ -131,29 +131,28 @@
                 <h3 id="modal-category-title">Test Ayarları</h3>
                 <button class="close-btn" id="btn-close-modal">✕</button>
             </div>
-            
-            <form id="quiz-settings-form">
+            <form id="quiz-settings-form" style="display: none;">
                 <div class="form-group">
                     <label for="setting-question-count">Soru Sayısı</label>
                     <select id="setting-question-count">
-                        <option value="5">5 Soru</option>
                         <option value="10" selected>10 Soru</option>
-                        <option value="15">15 Soru</option>
-                        <option value="all">Tümü</option>
                     </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="setting-timer-mode">Süre Modu</label>
-                    <select id="setting-timer-mode">
-                        <option value="none">Süre Yok (Serbest Çözüm)</option>
-                        <option value="60">Soru Başına 60 Saniye</option>
-                        <option value="90">Soru Başına 90 Saniye</option>
-                    </select>
-                </div>
-
-                <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem;">Testi Başlat</button>
             </form>
+
+            <div class="form-group" style="margin-top: 1rem;">
+                <label for="setting-timer-mode">Süre Modu</label>
+                <select id="setting-timer-mode">
+                    <option value="none">Süre Yok (Serbest Çözüm)</option>
+                    <option value="60">Soru Başına 60 Saniye</option>
+                    <option value="90">Soru Başına 90 Saniye</option>
+                </select>
+            </div>
+
+            <div id="test-list-container" style="margin-top: 1.5rem; display: flex; flex-direction: column; gap: 0.8rem; max-height: 50vh; overflow-y: auto; padding-right: 5px;">
+                <!-- Testler JS ile yüklenecek -->
+                <p class="text-muted" style="text-align: center;">Testler yükleniyor...</p>
+            </div>
         </div>
     </div>
 

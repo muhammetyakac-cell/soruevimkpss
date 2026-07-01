@@ -594,3 +594,5 @@ select:focus {
     justify-content: space-between;
   }
 }
+. s o l v e d - t e s t - b t n   {   b a c k g r o u n d :   r g b a ( 1 6 ,   1 8 5 ,   1 2 9 ,   0 . 1 ) ;   b o r d e r - c o l o r :   r g b a ( 1 6 ,   1 8 5 ,   1 2 9 ,   0 . 4 ) ;   c o l o r :   v a r ( - - t e x t - l i g h t ) ;   }   . s o l v e d - t e s t - b t n : h o v e r   {   b a c k g r o u n d :   r g b a ( 1 6 ,   1 8 5 ,   1 2 9 ,   0 . 2 ) ;   b o r d e r - c o l o r :   v a r ( - - s u c c e s s ) ;   }  
+ 

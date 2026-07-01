@@ -13,6 +13,9 @@ const Storage = (function() {
         history: [], // Son çözülen testler
         categories: {
             // Örnek: 'turkce': { solved: 50, correct: 40, highestScore: 100 }
+        },
+        solvedTests: {
+            // Örnek: 'turkce': [0, 1, 2] (Çözülen test indexleri)
         }
     };
 
@@ -78,7 +81,22 @@ const Storage = (function() {
                 data.history.pop();
             }
 
+            // Testi çözüldü olarak işaretle
+            if (result.testIndex !== undefined) {
+                if (!data.solvedTests) data.solvedTests = {};
+                if (!data.solvedTests[categoryId]) data.solvedTests[categoryId] = [];
+                if (!data.solvedTests[categoryId].includes(result.testIndex)) {
+                    data.solvedTests[categoryId].push(result.testIndex);
+                }
+            }
+
             saveData(data);
+        },
+        
+        getSolvedTests: function(categoryId) {
+            const data = getData();
+            if (!data.solvedTests) return [];
+            return data.solvedTests[categoryId] || [];
         }
     };
 })();

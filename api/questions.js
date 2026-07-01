@@ -34,6 +34,7 @@ export default async function handler(req, res) {
         SELECT id, question, options, correct_answer, explanation 
         FROM questions 
         WHERE category_id = ${req.query.categoryId}
+        ORDER BY id ASC
       `;
       
       // JSON tipini uygun nesneye çevirme
