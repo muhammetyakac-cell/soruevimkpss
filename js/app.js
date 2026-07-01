@@ -122,7 +122,7 @@ const App = (function() {
             btn.style.justifyContent = 'space-between';
             btn.style.alignItems = 'center';
             btn.innerHTML = `
-                <span>Deneme ${i + 1}</span>
+                <span>Test ${i + 1}</span>
                 <span>${isSolved ? '✅ Çözüldü' : '▶ Başla'}</span>
             `;
             btn.onclick = () => startTestBatch(i, btn);
@@ -170,7 +170,7 @@ const App = (function() {
             timerMode = tMode === 'none' ? 'none' : 'question';
             timerDuration = tMode === 'none' ? 0 : parseInt(tMode);
             
-            document.getElementById('quiz-title').innerText = `${currentCategory.icon} ${currentCategory.title} - Deneme ${testIndex + 1}`;
+            document.getElementById('quiz-title').innerText = `${currentCategory.icon} ${currentCategory.title} - Test ${testIndex + 1}`;
             
             // Quiz modülünü başlat (Sorular testQuestions olacak)
             Quiz.init(testQuestions, testQuestions.length);
