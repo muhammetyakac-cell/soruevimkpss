@@ -56,7 +56,7 @@ export default async function SoruPage({ params }: { params: { id: string } }) {
             
             // Sadece doğru cevabı vurgulayalım
             const isCorrect = idx === q.correct_answer;
-            const btnClass = \`option-btn \${isCorrect ? 'correct' : ''}\`;
+            const btnClass = `option-btn ${isCorrect ? 'correct' : ''}`;
 
             return (
               <div key={idx} className={btnClass} style={{ opacity: isCorrect ? 1 : 0.6 }}>

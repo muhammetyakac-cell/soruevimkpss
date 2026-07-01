@@ -7,9 +7,8 @@ export default async function Home() {
   // Fetch categories from Neon DB
   const categories = await sql`SELECT id, category_id, title, icon, description FROM categories ORDER BY id ASC`;
   
-  // Fetch total questions for each category
   const categoriesWithCounts = await Promise.all(
-    categories.map(async (cat) => {
+    categories.map(async (cat: any) => {
       const countRes = await sql`SELECT COUNT(*) FROM questions WHERE category_id = ${cat.category_id}`;
       return {
         ...cat,

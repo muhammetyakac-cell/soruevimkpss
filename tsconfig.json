@@ -1,13 +1,19 @@
 {
   "compilerOptions": {
     "target": "es2022",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
     "ignoreDeprecations": "6.0",
     "rootDir": "./",
+    "baseUrl": ".",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
     "lib": [
       "dom",
       "dom.iterable",
@@ -27,8 +33,11 @@
     ]
   },
   "include": [
-    "scripts/**/*",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
     ".next/types/**/*.ts",
+    "src/**/*",
     ".next/dev/types/**/*.ts"
   ],
   "exclude": [
