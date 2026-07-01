@@ -3,10 +3,5 @@
     { "source": "/kategori/(.*)", "destination": "/" },
     { "source": "/test/(.*)", "destination": "/" },
     { "source": "/sonuclar/(.*)", "destination": "/" }
-  ],
-  "functions": {
-    "api/import-tests.js": {
-      "includeFiles": "testler/**"
-    }
-  }
+  ]
 }

@@ -1,14 +1,22 @@
-import { neon } from '@neondatabase/serverless';
-import fs from 'fs';
-import path from 'path';
+const { neon } = require('@neondatabase/serverless');
+const fs = require('fs');
+const path = require('path');
 
-export default async function handler(req, res) {
+async function run() {
+  console.log('Test içe aktarma robotu başlatılıyor...');
+  
+  if (!process.env.DATABASE_URL) {
+    console.error('HATA: DATABASE_URL ortam değişkeni bulunamadı!');
+    process.exit(1);
+  }
+
   try {
     const sql = neon(process.env.DATABASE_URL);
     const testlerDir = path.join(process.cwd(), 'testler');
 
     if (!fs.existsSync(testlerDir)) {
-      return res.status(400).json({ error: 'testler dizini bulunamadı.' });
+      console.error('HATA: testler dizini bulunamadı.');
+      process.exit(1);
     }
 
     const categories = fs.readdirSync(testlerDir).filter(f => fs.statSync(path.join(testlerDir, f)).isDirectory());
@@ -21,10 +29,11 @@ export default async function handler(req, res) {
 
     for (const category_id of categories) {
       if (!validCategoryIds.includes(category_id)) {
-        console.warn(`Kategori bulunamadı: ${category_id}. Bu kategori veritabanında yok.`);
-        // İsterseniz burada kategoriyi otomatik oluşturabilirsiniz, şimdilik atlıyoruz.
+        console.warn(`UYARI: Kategori bulunamadı: ${category_id}. Bu kategori veritabanında yok.`);
+        continue;
       }
 
+      console.log(`-> Kategori taranıyor: ${category_id}`);
       const catPath = path.join(testlerDir, category_id);
       const files = fs.readdirSync(catPath).filter(f => f.endsWith('.md') || f.endsWith('.txt'));
 
@@ -37,17 +46,16 @@ export default async function handler(req, res) {
         const answers = {};
         let match;
         while ((match = answerRegex.exec(content)) !== null) {
-          answers[match[1]] = match[2]; // { "1": "D", "2": "B" }
+          answers[match[1]] = match[2];
         }
 
         // 2. Soruları Bulalım
-        // Örnek: **Soru 1:** Soru metni\nA) Şık1\nB) Şık2...
-        // Soru başlangıcını yakalamak için parçalara ayıralım
         const questionBlocks = content.split(/\*\*Soru \d+:\*\*|Soru \d+:/).slice(1);
         
         let qIndex = 1;
+        let importedFromFile = 0;
+
         for (const block of questionBlocks) {
-          // Blok içindeki metni satırlara böl
           const lines = block.split('\n').map(l => l.trim()).filter(l => l.length > 0);
           
           let questionText = '';
@@ -57,7 +65,7 @@ export default async function handler(req, res) {
             if (/^[A-E]\)/.test(line)) {
               options.push(line);
             } else if (line === '---' || line.startsWith('##')) {
-              break; // Cevap anahtarına geldik
+              break;
             } else if (options.length === 0) {
               questionText += (questionText ? ' ' : '') + line;
             }
@@ -79,22 +87,31 @@ export default async function handler(req, res) {
                   VALUES (${category_id}, ${questionText}, ${JSON.stringify(options)}, ${correctIndex}, ${"Cevap: " + correctLetter})
               `;
               totalImported++;
+              importedFromFile++;
             }
           } else {
-             errors.push(`Parse hatası: ${file} - Soru ${qIndex} eksik bilgi içeriyor. (Soru, Şık veya Cevap Anahtarı)`);
+             errors.push(`Parse hatası: ${category_id}/${file} - Soru ${qIndex} eksik bilgi içeriyor.`);
           }
           qIndex++;
+        }
+        if (importedFromFile > 0) {
+          console.log(`   * ${file}: ${importedFromFile} yeni soru eklendi.`);
         }
       }
     }
 
-    res.status(200).json({ 
-      message: `${totalImported} adet yeni soru başarıyla içeri aktarıldı.`,
-      errors: errors 
-    });
+    console.log(`\nBAŞARILI: Toplam ${totalImported} yeni soru içeri aktarıldı.`);
+    if (errors.length > 0) {
+      console.warn('Bazı hatalar oluştu:');
+      errors.forEach(e => console.warn(e));
+    }
+    
+    process.exit(0);
 
   } catch (error) {
-    console.error('Import error:', error);
-    res.status(500).json({ error: 'İçe aktarma hatası', details: error.message });
+    console.error('HATA: İçe aktarma işlemi başarısız oldu:', error);
+    process.exit(1);
   }
 }
+
+run();
