@@ -31,7 +31,7 @@ const App = (function() {
     // Blog Makaleleri
     const blogArticles = {
         'kpss-tarih-nasil-calisilir': {
-            title: "KPSS Tarih Nasıl Çalışılır? (2024 Güncel Taktikler)",
+            title: "KPSS Tarih Nasıl Çalışılır? (2026 Güncel Taktikler)",
             desc: "Tarih dersini ezberlemeden, mantığını kavrayarak nasıl full çekebilirsiniz?",
             content: `
                 <h2 style="color:var(--primary-color); margin-bottom:1rem;">KPSS Tarih: Ezberlemeden Başarmak</h2>
