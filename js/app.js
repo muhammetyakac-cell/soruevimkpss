@@ -90,10 +90,20 @@ const App = (function() {
         currentCategory = categoriesData[categoryId];
         document.getElementById('modal-category-title').innerText = `${currentCategory.title} Testi Ayarları`;
         modal.classList.add('active');
+        
+        // Sadece ana sayfadan tıklanarak açıldıysa URL'yi güncelle
+        if (window.location.pathname === '/') {
+             history.pushState(null, '', `/kategori/${categoryId}`);
+             setSEO(`${currentCategory.title} KPSS Testleri - SoruEvim`, currentCategory.description);
+        }
     }
 
     function closeSettingsModal() {
         modal.classList.remove('active');
+        if (window.location.pathname.startsWith('/kategori/')) {
+            history.pushState(null, '', '/');
+            setSEO("SoruEvim KPSS - İnteraktif Hazırlık", "KPSS adayları için interaktif, modern ve ücretsiz test çözme platformu.");
+        }
     }
 
     async function startQuiz(e) {
@@ -144,6 +154,7 @@ const App = (function() {
                 }
             );
 
+            history.pushState(null, '', `/test/${currentCategory.id}`);
             navigateTo('quiz');
         } catch (error) {
             console.error('Failed to load questions', error);
@@ -177,13 +188,54 @@ const App = (function() {
         document.getElementById('result-empty').innerText = results.empty;
         
         updateHomeUI(); // Ana sayfadaki istatistikleri güncelle (arkaplanda)
+        history.pushState(null, '', `/sonuclar`);
         navigateTo('results');
     }
 
     function quitQuiz() {
         if(confirm("Testten çıkmak istediğinize emin misiniz? İlerlemeniz kaydedilmeyecek.")) {
             Timer.stop();
+            history.pushState(null, '', '/');
+            route();
+        }
+    }
+
+    function setSEO(title, description) {
+        document.title = title;
+        document.querySelector('meta[name="description"]')?.setAttribute("content", description);
+        document.querySelector('meta[property="og:title"]')?.setAttribute("content", title);
+        document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
+    }
+
+    function route() {
+        const path = window.location.pathname;
+        if (path.startsWith('/kategori/')) {
+            const catId = path.replace('/kategori/', '');
+            if (categoriesData[catId]) {
+                openSettingsModal(catId);
+                navigateTo('home'); // modal home üstünde açılır
+                
+                // SEO Update
+                setSEO(`${categoriesData[catId].title} KPSS Testleri - SoruEvim`, categoriesData[catId].description);
+            } else {
+                navigateTo('home');
+            }
+        } else if (path.startsWith('/test/')) {
+            // Eğer testte değilse ana sayfaya dön (refresh durumu)
+            if (!currentCategory) {
+                history.replaceState(null, '', '/');
+                navigateTo('home');
+            }
+        } else if (path === '/sonuclar') {
+            if (!currentCategory) {
+                history.replaceState(null, '', '/');
+                navigateTo('home');
+            } else {
+                navigateTo('results');
+            }
+        } else {
             navigateTo('home');
+            setSEO("SoruEvim KPSS - İnteraktif Hazırlık", "KPSS adayları için interaktif, modern ve ücretsiz test çözme platformu.");
         }
     }
 
@@ -191,24 +243,36 @@ const App = (function() {
     document.getElementById('btn-close-modal').addEventListener('click', closeSettingsModal);
     document.getElementById('quiz-settings-form').addEventListener('submit', startQuiz);
     document.getElementById('btn-quit-quiz').addEventListener('click', quitQuiz);
-    document.getElementById('btn-restart-quiz').addEventListener('click', () => openSettingsModal(currentCategory.id));
+    document.getElementById('btn-restart-quiz').addEventListener('click', () => {
+        history.pushState(null, '', `/kategori/${currentCategory.id}`);
+        openSettingsModal(currentCategory.id);
+    });
     
-    // Setup routing based on hash (simple router)
-    window.addEventListener('hashchange', () => {
-        const hash = window.location.hash.replace('#', '') || 'home';
-        if (['home', 'quiz', 'results'].includes(hash)) {
-            // Eğer quize dışarıdan manuel girmeye çalışırsa engelle
-            if (hash === 'quiz' && !currentCategory) {
-                window.location.hash = 'home';
-                return;
-            }
-            if (hash === 'home') navigateTo('home');
-        }
+    // Link overrides for SPA routing
+    document.getElementById('btn-home')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        history.pushState(null, '', '/');
+        route();
+    });
+    
+    document.getElementById('btn-results-home')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        history.pushState(null, '', '/');
+        route();
     });
 
+    document.querySelector('.logo')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        history.pushState(null, '', '/');
+        route();
+    });
+
+    window.addEventListener('popstate', route);
+
     // Init
-    window.addEventListener('DOMContentLoaded', () => {
-        loadData();
+    window.addEventListener('DOMContentLoaded', async () => {
+        await loadData();
+        route(); // Initial route
     });
 
     return {
