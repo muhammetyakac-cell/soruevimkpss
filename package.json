@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "bot": "ts-node --transpile-only scripts/bot.ts"
   },
   "keywords": [],
   "author": "",
@@ -13,5 +14,11 @@
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
     "dotenv": "^17.4.2"
+  },
+  "devDependencies": {
+    "@types/node": "^26.1.0",
+    "chokidar": "^5.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   }
 }
