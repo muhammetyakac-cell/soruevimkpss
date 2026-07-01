@@ -8,6 +8,16 @@ const App = (function() {
     let timerDuration = 0;
     let quizStartTime = 0;
 
+    // SEO Açıklamaları (Kategori bazlı zengin içerik)
+    const seoDescriptions = {
+        'tarih': 'KPSS Tarih testleri; İslamiyet öncesi Türk tarihi, Osmanlı tarihi, İnkılap tarihi ve Çağdaş Türk ve Dünya tarihi konularını kapsar. Çıkmış soru tiplerine uygun hazırlanan bu denemelerle eksiklerinizi kapatın ve sınavda yüksek net hedefleyin.',
+        'cografya': 'KPSS Coğrafya testleri; Türkiye\'nin fiziki özellikleri, iklimi, nüfus ve yerleşme, ekonomik coğrafya konularını içerir. Harita bilgisi ve güncel coğrafi verilerle desteklenen sorularla sınava tam donanımlı hazırlanın.',
+        'matematik': 'KPSS Matematik testleri; temel kavramlar, rasyonel sayılar, problemler ve geometri gibi kritik konulardan oluşur. Pratik çözümler geliştirerek hız kazanmanız ve netlerinizi artırmanız için özenle hazırlanmıştır.',
+        'turkce': 'KPSS Türkçe testleri; sözcükte ve cümlede anlam, paragraf yorumlama, dil bilgisi ve yazım kuralları konularını kapsar. Özellikle uzun paragraf sorularında okuma hızınızı ve anlama kapasitenizi test edin.',
+        'vatandaslik': 'KPSS Vatandaşlık testleri; temel hukuk kavramları, anayasa hukuku, idare hukuku ve güncel mevzuat değişikliklerini içerir. Bilgiye dayalı bu alanda pratik yaparak ezberinizi kalıcı hale getirin.',
+        'guncel-bilgiler': 'KPSS Güncel Bilgiler testleri; Türkiye ve dünyadaki son dakika gelişmeleri, uluslararası kuruluşlar, sanat, spor ve kültür olaylarını kapsar. Sınavın en sürprizli bölümünde avantaj sağlayın.'
+    };
+
     // DOM Elements
     const sections = {
         home: document.getElementById('home'),
@@ -90,12 +100,17 @@ const App = (function() {
     function openSettingsModal(categoryId) {
         currentCategory = categoriesData[categoryId];
         document.getElementById('modal-category-title').innerText = `${currentCategory.title} Test Seçimi`;
+        
+        // SEO Metni enjeksiyonu
+        const seoText = seoDescriptions[categoryId] || currentCategory.description;
+        document.getElementById('modal-seo-description').innerText = seoText;
+        
         modal.classList.add('active');
         
         // Sadece ana sayfadan tıklanarak açıldıysa URL'yi güncelle
         if (window.location.pathname === '/') {
              history.pushState(null, '', `/kategori/${categoryId}`);
-             setSEO(`${currentCategory.title} KPSS Testleri - SoruEvim`, currentCategory.description);
+             setSEO(`${currentCategory.title} KPSS Testleri - SoruEvim`, seoText);
         }
 
         renderTestList();
@@ -135,7 +150,52 @@ const App = (function() {
         if (window.location.pathname.startsWith('/kategori/')) {
             history.pushState(null, '', '/');
             setSEO("SoruEvim KPSS - İnteraktif Hazırlık", "KPSS adayları için interaktif, modern ve ücretsiz test çözme platformu.");
+            removeJSONLD(); // Modal kapanırken quiz JSON-LD'yi temizle
         }
+    }
+
+    // JSON-LD (Structured Data) Oluşturucu
+    function injectQuizJSONLD(testQuestions, categoryTitle, testIndex) {
+        removeJSONLD();
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'quiz-json-ld';
+        
+        const quizData = {
+            "@context": "https://schema.org",
+            "@type": "Quiz",
+            "name": `KPSS ${categoryTitle} Testi Çöz - Deneme ${testIndex + 1}`,
+            "description": `KPSS ${categoryTitle} konularını kapsayan 10 soruluk Deneme ${testIndex + 1} testi.`,
+            "educationalAlignment": [
+                {
+                    "@type": "AlignmentObject",
+                    "alignmentType": "educationalSubject",
+                    "targetName": "KPSS"
+                }
+            ],
+            "hasPart": testQuestions.map(q => ({
+                "@type": "Question",
+                "name": "Soru",
+                "text": q.question,
+                "suggestedAnswer": q.options.map((opt, i) => ({
+                    "@type": "Answer",
+                    "text": opt,
+                    "position": i
+                })),
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": q.options[q.correct_answer],
+                    "position": q.correct_answer
+                }
+            }))
+        };
+        script.text = JSON.stringify(quizData);
+        document.head.appendChild(script);
+    }
+
+    function removeJSONLD() {
+        const existing = document.getElementById('quiz-json-ld');
+        if (existing) existing.remove();
     }
 
     // Butona tıklanınca testi başlatır
@@ -195,6 +255,22 @@ const App = (function() {
                 }
             );
 
+            // Breadcrumbs oluştur
+            const breadcrumbEl = document.getElementById('quiz-breadcrumb');
+            if (breadcrumbEl) {
+                breadcrumbEl.innerHTML = `
+                    <a href="#" onclick="document.getElementById('btn-home').click(); return false;" style="color:var(--text-muted); text-decoration:none;">Ana Sayfa</a> &gt; 
+                    <a href="#" onclick="document.getElementById('btn-results-home').click(); return false;" style="color:var(--text-muted); text-decoration:none;">${currentCategory.title}</a> &gt; 
+                    <span class="text-primary">Test ${testIndex + 1}</span>
+                `;
+            }
+
+            // Test Odaklı SEO ve Metadata
+            const testTitle = `KPSS ${currentCategory.title} Testi Çöz - Deneme ${testIndex + 1} | SoruEvim`;
+            const testDesc = `KPSS ${currentCategory.title} konularını kapsayan 10 soruluk Deneme ${testIndex + 1} testini ücretsiz çözün, sonuçlarınızı anında görün ve eksiklerinizi kapatın.`;
+            setSEO(testTitle, testDesc);
+            injectQuizJSONLD(testQuestions, currentCategory.title, testIndex);
+
             history.pushState(null, '', `/test/${currentCategory.id}/${testIndex + 1}`);
             navigateTo('quiz');
         } catch (error) {
@@ -237,6 +313,7 @@ const App = (function() {
     function quitQuiz() {
         if(confirm("Testten çıkmak istediğinize emin misiniz? İlerlemeniz kaydedilmeyecek.")) {
             Timer.stop();
+            removeJSONLD();
             history.pushState(null, '', '/');
             route();
         }
@@ -278,6 +355,7 @@ const App = (function() {
         } else {
             navigateTo('home');
             setSEO("SoruEvim KPSS - İnteraktif Hazırlık", "KPSS adayları için interaktif, modern ve ücretsiz test çözme platformu.");
+            removeJSONLD();
         }
     }
 

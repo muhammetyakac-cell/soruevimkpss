@@ -18,6 +18,8 @@ export default async function handler(req, res) {
     xml += `    <priority>1.0</priority>\n`;
     xml += `  </url>\n`;
 
+    const categoryCounts = await sql`SELECT category_id, COUNT(id) as count FROM questions GROUP BY category_id`;
+
     // Kategori Sayfaları
     for (const cat of categories) {
       xml += `  <url>\n`;
@@ -25,6 +27,19 @@ export default async function handler(req, res) {
       xml += `    <changefreq>weekly</changefreq>\n`;
       xml += `    <priority>0.8</priority>\n`;
       xml += `  </url>\n`;
+
+      // Kategoriye ait testler
+      const countRow = categoryCounts.find(c => c.category_id === cat.category_id);
+      if (countRow) {
+        const totalTests = Math.ceil(parseInt(countRow.count) / 10);
+        for (let i = 1; i <= totalTests; i++) {
+          xml += `  <url>\n`;
+          xml += `    <loc>${baseUrl}/test/${cat.category_id}/${i}</loc>\n`;
+          xml += `    <changefreq>monthly</changefreq>\n`;
+          xml += `    <priority>0.6</priority>\n`;
+          xml += `  </url>\n`;
+        }
+      }
     }
 
     xml += `</urlset>`;
