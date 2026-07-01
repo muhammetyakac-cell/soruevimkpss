@@ -3,6 +3,8 @@
     { "source": "/sitemap.xml", "destination": "/api/sitemap.xml" },
     { "source": "/kategori/(.*)", "destination": "/" },
     { "source": "/test/(.*)", "destination": "/" },
-    { "source": "/sonuclar/(.*)", "destination": "/" }
+    { "source": "/sonuclar(.*)", "destination": "/" },
+    { "source": "/blog", "destination": "/" },
+    { "source": "/blog/(.*)", "destination": "/" }
   ]
 }

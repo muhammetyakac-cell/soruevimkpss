@@ -22,7 +22,38 @@ const App = (function() {
     const sections = {
         home: document.getElementById('home'),
         quiz: document.getElementById('quiz'),
-        results: document.getElementById('results')
+        results: document.getElementById('results'),
+        'category-page': document.getElementById('category-page'),
+        'blog-page': document.getElementById('blog-page'),
+        'blog-article': document.getElementById('blog-article')
+    };
+
+    // Blog Makaleleri
+    const blogArticles = {
+        'kpss-tarih-nasil-calisilir': {
+            title: "KPSS Tarih Nasıl Çalışılır? (2024 Güncel Taktikler)",
+            desc: "Tarih dersini ezberlemeden, mantığını kavrayarak nasıl full çekebilirsiniz?",
+            content: `
+                <h2 style="color:var(--primary-color); margin-bottom:1rem;">KPSS Tarih: Ezberlemeden Başarmak</h2>
+                <p style="margin-bottom:1rem;">Tarih pek çok aday için ezber yığını gibi görünür. Ancak olaylar arası sebep-sonuç ilişkisini kurduğunuzda aslında çok mantıklı bir hikaye okuduğunuzu fark edersiniz.</p>
+                <h3 style="margin-bottom:0.5rem; margin-top:1.5rem;">1. Kronolojiye Hakim Olun</h3>
+                <p style="margin-bottom:1rem;">Olayların tarihini gün gün ezberlemek yerine, hangi padişahın hangi dönemde yaşadığını ve o dönemin ruhunu bilmek çok daha önemlidir.</p>
+                <h3 style="margin-bottom:0.5rem; margin-top:1.5rem;">2. Harita Bilgisi</h3>
+                <p style="margin-bottom:1rem;">Özellikle Osmanlı'nın duraklama ve gerileme dönemlerindeki antlaşmalar harita üzerinden çalışıldığında akılda daha kalıcı olur.</p>
+                <h3 style="margin-bottom:0.5rem; margin-top:1.5rem;">3. Bol Soru Çözün</h3>
+                <p style="margin-bottom:1rem;">Konuyu ne kadar iyi bilirseniz bilin, ÖSYM'nin soru tarzını görmek için bol bol çıkmış soru ve deneme çözmelisiniz. SoruEvim üzerinden ücretsiz Tarih testlerine göz atabilirsiniz.</p>
+            `
+        },
+        'kpss-deneme-cozmenin-onemi': {
+            title: "Günde Kaç KPSS Denemesi Çözmelisiniz?",
+            desc: "Sınava aylar kala deneme çözme sıklığınızı nasıl ayarlamalısınız?",
+            content: `
+                <h2 style="color:var(--primary-color); margin-bottom:1rem;">Deneme Çözmek Neden Önemli?</h2>
+                <p style="margin-bottom:1rem;">Birçok aday konu çalışmayı bitirmeden deneme çözmeye başlamaz. Bu büyük bir hatadır! Sınav stresini yönetmek, süreyi efektif kullanmak için erken deneme çözümü şarttır.</p>
+                <h3 style="margin-bottom:0.5rem; margin-top:1.5rem;">Yanlış Defteri Tutun</h3>
+                <p style="margin-bottom:1rem;">Her deneme sonrası yanlış yaptığınız veya boş bıraktığınız soruları bir deftere kaydedin. Bu defter, sınava son bir ay kala en değerli kaynağınız olacak.</p>
+            `
+        }
     };
 
     const modal = document.getElementById('settings-modal');
@@ -74,7 +105,7 @@ const App = (function() {
             const catStats = Storage.getCategoryStats(cat.id);
             const card = document.createElement('div');
             card.className = 'glass-card category-card';
-            card.onclick = () => openSettingsModal(cat.id);
+            card.onclick = () => openCategoryPage(cat.id);
             
             card.innerHTML = `
                 <div class="category-icon">${cat.icon}</div>
@@ -97,60 +128,135 @@ const App = (function() {
         }
     }
 
-    function openSettingsModal(categoryId) {
+    async function openCategoryPage(categoryId) {
         currentCategory = categoriesData[categoryId];
-        document.getElementById('modal-category-title').innerText = `${currentCategory.title} Test Seçimi`;
         
         // SEO Metni enjeksiyonu
         const seoText = seoDescriptions[categoryId] || currentCategory.description;
-        document.getElementById('modal-seo-description').innerText = seoText;
+        document.getElementById('page-category-title').innerText = `${currentCategory.icon} ${currentCategory.title} Testleri`;
+        document.getElementById('page-seo-description').innerText = seoText;
         
-        modal.classList.add('active');
-        
-        // Sadece ana sayfadan tıklanarak açıldıysa URL'yi güncelle
-        if (window.location.pathname === '/') {
-             history.pushState(null, '', `/kategori/${categoryId}`);
-             setSEO(`${currentCategory.title} KPSS Testleri - SoruEvim`, seoText);
+        const breadcrumbEl = document.getElementById('cat-breadcrumb');
+        if(breadcrumbEl) {
+            breadcrumbEl.innerHTML = `
+                <a href="#" onclick="document.getElementById('btn-home').click(); return false;" style="color:var(--text-muted); text-decoration:none;">Ana Sayfa</a> &gt; 
+                <span class="text-primary">${currentCategory.title}</span>
+            `;
         }
 
-        renderTestList();
+        navigateTo('category-page');
+        
+        // Sadece ana sayfadan tıklanarak açıldıysa veya doğrudan gelindiyse URL'yi güncelle
+        if (window.location.pathname === '/' || window.location.pathname.startsWith('/kategori/')) {
+             history.pushState(null, '', `/kategori/${categoryId}`);
+             setSEO(`${currentCategory.title} KPSS Testleri - SoruEvim`, seoText, `https://soruevimkpss.vercel.app/kategori/${categoryId}`);
+        }
+
+        await renderTestList();
     }
 
-    function renderTestList() {
-        const container = document.getElementById('test-list-container');
-        container.innerHTML = '';
+    async function renderTestList() {
+        const container = document.getElementById('page-test-list-container');
+        container.innerHTML = '<p class="text-muted">Testler yükleniyor...</p>';
         
+        // API'den soruları çek (önbellekte yoksa)
+        if (!fullQuestionsData[currentCategory.id]) {
+            try {
+                const response = await fetch(`/api/questions?categoryId=${currentCategory.id}`);
+                if (response.ok) {
+                    fullQuestionsData[currentCategory.id] = await response.json();
+                }
+            } catch (e) {
+                console.error("Sorular yüklenemedi", e);
+            }
+        }
+
         const totalTests = Math.ceil(currentCategory.totalQuestions / 10);
         const solvedTests = Storage.getSolvedTests(currentCategory.id);
 
         if (totalTests === 0) {
-            container.innerHTML = '<p class="text-muted" style="text-align:center;">Bu kategoriye ait henüz test bulunmuyor.</p>';
+            container.innerHTML = '<p class="text-muted">Bu kategoriye ait henüz test bulunmuyor.</p>';
             return;
         }
 
+        container.innerHTML = '';
         for (let i = 0; i < totalTests; i++) {
             const isSolved = solvedTests.includes(i);
-            const btn = document.createElement('button');
-            btn.className = `btn-outline ${isSolved ? 'solved-test-btn' : ''}`;
-            btn.style.width = '100%';
-            btn.style.display = 'flex';
-            btn.style.justifyContent = 'space-between';
-            btn.style.alignItems = 'center';
-            btn.innerHTML = `
-                <span>Test ${i + 1}</span>
-                <span>${isSolved ? '✅ Çözüldü' : '▶ Başla'}</span>
+            const startIndex = i * 10;
+            const testQuestions = fullQuestionsData[currentCategory.id]?.slice(startIndex, startIndex + 10) || [];
+            
+            // Soru önizlemesi (Snippet)
+            let previewText = "Sorular yükleniyor...";
+            if(testQuestions.length > 0) {
+                previewText = testQuestions[0].question.substring(0, 80) + '...';
+            }
+
+            const card = document.createElement('div');
+            card.className = `glass-card ${isSolved ? 'solved-test-btn' : ''}`;
+            card.style.display = 'flex';
+            card.style.flexDirection = 'column';
+            card.style.justifyContent = 'space-between';
+            card.style.cursor = 'pointer';
+            card.style.padding = '1.2rem';
+            
+            card.innerHTML = `
+                <div>
+                    <div style="display:flex; justify-content:space-between; margin-bottom:0.5rem;">
+                        <h4 style="margin:0;">Test ${i + 1}</h4>
+                        <span style="font-size:0.8rem; color:var(--text-muted);">${testQuestions.length} Soru</span>
+                    </div>
+                    <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:1rem; font-style:italic;">"${previewText}"</p>
+                </div>
+                <button class="btn-primary" style="width:100%; padding:0.6rem; ${isSolved ? 'background:var(--success);border-color:var(--success);' : ''}">
+                    ${isSolved ? '✅ Çözüldü' : '▶ Başla'}
+                </button>
             `;
-            btn.onclick = () => startTestBatch(i, btn);
-            container.appendChild(btn);
+            
+            card.onclick = () => startTestBatch(i, card.querySelector('button'));
+            container.appendChild(card);
         }
     }
 
+    function openBlogList() {
+        navigateTo('blog-page');
+        setSEO("KPSS Rehberliği ve Blog - SoruEvim", "KPSS sınav taktikleri, çalışma programları, deneme çözme yöntemleri ve güncel duyurular.", "https://soruevimkpss.vercel.app/blog");
+    }
+
+    function openArticle(slug) {
+        const article = blogArticles[slug];
+        if(!article) {
+            navigateTo('blog-page');
+            return;
+        }
+
+        const breadcrumbEl = document.getElementById('blog-breadcrumb');
+        if(breadcrumbEl) {
+            breadcrumbEl.innerHTML = `
+                <a href="#" onclick="document.getElementById('btn-home').click(); return false;" style="color:var(--text-muted); text-decoration:none;">Ana Sayfa</a> &gt; 
+                <a href="/blog" onclick="document.getElementById('btn-blog').click(); return false;" style="color:var(--text-muted); text-decoration:none;">Blog</a> &gt; 
+                <span class="text-primary">${article.title}</span>
+            `;
+        }
+
+        document.getElementById('article-content').innerHTML = `
+            <h1 style="font-size:2.2rem; margin-bottom:0.5rem;">${article.title}</h1>
+            <p style="color:var(--text-muted); margin-bottom:2rem; font-style:italic;">${article.desc}</p>
+            ${article.content}
+        `;
+
+        navigateTo('blog-article');
+        
+        if (window.location.pathname !== `/blog/${slug}`) {
+            history.pushState(null, '', `/blog/${slug}`);
+        }
+        setSEO(`${article.title} | SoruEvim Blog`, article.desc, `https://soruevimkpss.vercel.app/blog/${slug}`);
+    }
+
+    // Modal artık kullanılmıyor, ancak fonksiyon durabilir veya boşaltılabilir
     function closeSettingsModal() {
-        modal.classList.remove('active');
         if (window.location.pathname.startsWith('/kategori/')) {
             history.pushState(null, '', '/');
-            setSEO("SoruEvim KPSS - İnteraktif Hazırlık", "KPSS adayları için interaktif, modern ve ücretsiz test çözme platformu.");
-            removeJSONLD(); // Modal kapanırken quiz JSON-LD'yi temizle
+            route();
         }
     }
 
@@ -196,6 +302,45 @@ const App = (function() {
     function removeJSONLD() {
         const existing = document.getElementById('quiz-json-ld');
         if (existing) existing.remove();
+        
+        const existingFaq = document.getElementById('faq-json-ld');
+        if (existingFaq) existingFaq.remove();
+    }
+
+    function injectFaqJSONLD() {
+        removeJSONLD();
+        const script = document.createElement('script');
+        script.type = 'application/ld+json';
+        script.id = 'faq-json-ld';
+        
+        const faqData = {
+            "@context": "https://schema.org",
+            "@type": "FAQPage",
+            "mainEntity": [{
+                "@type": "Question",
+                "name": "KPSS testlerini ücretsiz mi çözüyorum?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Evet, SoruEvim platformundaki Tarih, Coğrafya, Vatandaşlık, Matematik ve Türkçe gibi tüm KPSS online deneme ve yaprak testleri tamamen ücretsizdir."
+                }
+            }, {
+                "@type": "Question",
+                "name": "Online KPSS denemeleri güncel mi?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Sistemimize düzenli olarak yeni müfredata ve ÖSYM'nin yeni nesil soru tiplerine uygun güncel bilgiler ve testler otomatik olarak eklenmektedir."
+                }
+            }, {
+                "@type": "Question",
+                "name": "Çözdüğüm testlerin sonucunu görebilir miyim?",
+                "acceptedAnswer": {
+                    "@type": "Answer",
+                    "text": "Testi bitirdiğiniz anda kaç doğru, kaç yanlış yaptığınızı görebilir, soruların detaylı çözümlerini ve açıklamalarını anında inceleyebilirsiniz. İlerlemeniz cihazınıza kaydedilir."
+                }
+            }]
+        };
+        script.text = JSON.stringify(faqData);
+        document.head.appendChild(script);
     }
 
     // Butona tıklanınca testi başlatır
@@ -224,11 +369,9 @@ const App = (function() {
                 alert('Bu testte soru bulunamadı.');
                 return;
             }
-
-            closeSettingsModal();
             
-            timerMode = tMode === 'none' ? 'none' : 'question';
-            timerDuration = tMode === 'none' ? 0 : parseInt(tMode);
+            timerMode = 'none'; // Şimdilik varsayılan süre yok
+            timerDuration = 0;
             
             document.getElementById('quiz-title').innerText = `${currentCategory.icon} ${currentCategory.title} - Test ${testIndex + 1}`;
             
@@ -268,7 +411,7 @@ const App = (function() {
             // Test Odaklı SEO ve Metadata
             const testTitle = `KPSS ${currentCategory.title} Testi Çöz - Deneme ${testIndex + 1} | SoruEvim`;
             const testDesc = `KPSS ${currentCategory.title} konularını kapsayan 10 soruluk Deneme ${testIndex + 1} testini ücretsiz çözün, sonuçlarınızı anında görün ve eksiklerinizi kapatın.`;
-            setSEO(testTitle, testDesc);
+            setSEO(testTitle, testDesc, `https://soruevimkpss.vercel.app/test/${currentCategory.id}/${testIndex + 1}`);
             injectQuizJSONLD(testQuestions, currentCategory.title, testIndex);
 
             history.pushState(null, '', `/test/${currentCategory.id}/${testIndex + 1}`);
@@ -319,11 +462,26 @@ const App = (function() {
         }
     }
 
-    function setSEO(title, description) {
+    function setSEO(title, description, url = "https://soruevimkpss.vercel.app/") {
         document.title = title;
         document.querySelector('meta[name="description"]')?.setAttribute("content", description);
-        document.querySelector('meta[property="og:title"]')?.setAttribute("content", title);
-        document.querySelector('meta[property="og:description"]')?.setAttribute("content", description);
+        
+        // Open Graph Meta Etiketleri
+        let ogTitle = document.querySelector('meta[property="og:title"]');
+        if(!ogTitle) { ogTitle = document.createElement('meta'); ogTitle.setAttribute('property', 'og:title'); document.head.appendChild(ogTitle); }
+        ogTitle.setAttribute("content", title);
+        
+        let ogDesc = document.querySelector('meta[property="og:description"]');
+        if(!ogDesc) { ogDesc = document.createElement('meta'); ogDesc.setAttribute('property', 'og:description'); document.head.appendChild(ogDesc); }
+        ogDesc.setAttribute("content", description);
+        
+        let ogUrl = document.querySelector('meta[property="og:url"]');
+        if(!ogUrl) { ogUrl = document.createElement('meta'); ogUrl.setAttribute('property', 'og:url'); document.head.appendChild(ogUrl); }
+        ogUrl.setAttribute("content", url);
+        
+        let ogImage = document.querySelector('meta[property="og:image"]');
+        if(!ogImage) { ogImage = document.createElement('meta'); ogImage.setAttribute('property', 'og:image'); document.head.appendChild(ogImage); }
+        ogImage.setAttribute("content", "https://soruevimkpss.vercel.app/og-image.jpg"); // Varsayılan bir görsel varsayalım
     }
 
     function route() {
@@ -331,11 +489,7 @@ const App = (function() {
         if (path.startsWith('/kategori/')) {
             const catId = path.replace('/kategori/', '');
             if (categoriesData[catId]) {
-                openSettingsModal(catId);
-                navigateTo('home'); // modal home üstünde açılır
-                
-                // SEO Update
-                setSEO(`${categoriesData[catId].title} KPSS Testleri - SoruEvim`, categoriesData[catId].description);
+                openCategoryPage(catId);
             } else {
                 navigateTo('home');
             }
@@ -345,6 +499,12 @@ const App = (function() {
                 history.replaceState(null, '', '/');
                 navigateTo('home');
             }
+        } else if (path === '/blog') {
+            openBlogList();
+            if(window.location.pathname !== '/blog') history.pushState(null, '', '/blog');
+        } else if (path.startsWith('/blog/')) {
+            const slug = path.replace('/blog/', '');
+            openArticle(slug);
         } else if (path === '/sonuclar') {
             if (!currentCategory) {
                 history.replaceState(null, '', '/');
@@ -355,23 +515,28 @@ const App = (function() {
         } else {
             navigateTo('home');
             setSEO("SoruEvim KPSS - İnteraktif Hazırlık", "KPSS adayları için interaktif, modern ve ücretsiz test çözme platformu.");
-            removeJSONLD();
+            injectFaqJSONLD();
         }
     }
 
     // Event Listeners
-    document.getElementById('btn-close-modal').addEventListener('click', closeSettingsModal);
-    document.getElementById('quiz-settings-form').addEventListener('submit', (e) => e.preventDefault());
+    // Modal iptal edildiği için form listener kaldırılabilir
     document.getElementById('btn-quit-quiz').addEventListener('click', quitQuiz);
     document.getElementById('btn-restart-quiz').addEventListener('click', () => {
         history.pushState(null, '', `/kategori/${currentCategory.id}`);
-        openSettingsModal(currentCategory.id);
+        openCategoryPage(currentCategory.id);
     });
     
     // Link overrides for SPA routing
     document.getElementById('btn-home')?.addEventListener('click', (e) => {
         e.preventDefault();
         history.pushState(null, '', '/');
+        route();
+    });
+    
+    document.getElementById('btn-blog')?.addEventListener('click', (e) => {
+        e.preventDefault();
+        history.pushState(null, '', '/blog');
         route();
     });
     
@@ -398,6 +563,8 @@ const App = (function() {
     return {
         getTimerMode: () => timerMode,
         getTimerDuration: () => timerDuration,
-        finishQuiz
+        finishQuiz,
+        openArticle,
+        openBlogList
     };
 })();
