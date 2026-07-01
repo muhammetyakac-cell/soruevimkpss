@@ -18,29 +18,25 @@ const App = (function() {
     const categoriesGrid = document.getElementById('categories-grid');
 
     async function loadData() {
-        const files = ['turkce', 'matematik', 'tarih', 'cografya', 'vatandaslik', 'guncel'];
-        
-        for (const file of files) {
-            try {
-                const response = await fetch(`data/${file}.json`);
-                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-                const data = await response.json();
-                
-                categoriesData[data.id] = {
-                    id: data.id,
-                    title: data.category,
-                    icon: data.icon,
-                    description: data.description,
-                    totalQuestions: data.questions.length
+        try {
+            const response = await fetch('/api/questions?type=categories');
+            if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+            const data = await response.json();
+            
+            data.forEach(cat => {
+                categoriesData[cat.category_id] = {
+                    id: cat.category_id,
+                    title: cat.title,
+                    icon: cat.icon,
+                    description: cat.description,
+                    totalQuestions: cat.totalQuestions
                 };
-                
-                fullQuestionsData[data.id] = data.questions;
-            } catch (error) {
-                console.error(`Failed to load ${file}.json`, error);
-            }
+            });
+            updateHomeUI();
+        } catch (error) {
+            console.error('Failed to load categories', error);
+            document.getElementById('categories-grid').innerHTML = '<p style="text-align:center;color:var(--error);">Kategoriler yüklenemedi. Sunucu bağlantısı kurulamıyor olabilir.</p>';
         }
-        
-        updateHomeUI();
     }
 
     function updateHomeUI() {
@@ -100,42 +96,62 @@ const App = (function() {
         modal.classList.remove('active');
     }
 
-    function startQuiz(e) {
+    async function startQuiz(e) {
         e.preventDefault();
-        closeSettingsModal();
         
         const qCount = document.getElementById('setting-question-count').value;
         const tMode = document.getElementById('setting-timer-mode').value;
-        
-        timerMode = tMode === 'none' ? 'none' : 'question';
-        timerDuration = tMode === 'none' ? 0 : parseInt(tMode);
-        
-        document.getElementById('quiz-title').innerText = `${currentCategory.icon} ${currentCategory.title} Testi`;
-        
-        // Quiz modülünü başlat
-        Quiz.init(fullQuestionsData[currentCategory.id], qCount);
-        
-        // Timer'ı başlat
-        quizStartTime = Date.now();
-        const timerUI = document.getElementById('quiz-timer');
-        const timerText = document.getElementById('timer-text');
-        
-        Timer.start(timerMode, timerDuration, 
-            (secLeft, formatted) => {
-                timerText.innerText = formatted;
-                if (timerMode !== 'none' && secLeft <= 10) {
-                    timerUI.classList.add('warning');
-                } else {
-                    timerUI.classList.remove('warning');
-                }
-            },
-            () => {
-                // Timeout handler
-                Quiz.handleTimeout();
-            }
-        );
+        const submitBtn = document.querySelector('#quiz-settings-form button[type="submit"]');
+        const originalText = submitBtn.innerText;
+        submitBtn.innerText = 'Yükleniyor...';
+        submitBtn.disabled = true;
 
-        navigateTo('quiz');
+        try {
+            // API'den soruları çek (önbellekte yoksa)
+            if (!fullQuestionsData[currentCategory.id]) {
+                const response = await fetch(`/api/questions?categoryId=${currentCategory.id}`);
+                if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+                fullQuestionsData[currentCategory.id] = await response.json();
+            }
+
+            closeSettingsModal();
+            
+            timerMode = tMode === 'none' ? 'none' : 'question';
+            timerDuration = tMode === 'none' ? 0 : parseInt(tMode);
+            
+            document.getElementById('quiz-title').innerText = `${currentCategory.icon} ${currentCategory.title} Testi`;
+            
+            // Quiz modülünü başlat
+            Quiz.init(fullQuestionsData[currentCategory.id], qCount);
+            
+            // Timer'ı başlat
+            quizStartTime = Date.now();
+            const timerUI = document.getElementById('quiz-timer');
+            const timerText = document.getElementById('timer-text');
+            
+            Timer.start(timerMode, timerDuration, 
+                (secLeft, formatted) => {
+                    timerText.innerText = formatted;
+                    if (timerMode !== 'none' && secLeft <= 10) {
+                        timerUI.classList.add('warning');
+                    } else {
+                        timerUI.classList.remove('warning');
+                    }
+                },
+                () => {
+                    // Timeout handler
+                    Quiz.handleTimeout();
+                }
+            );
+
+            navigateTo('quiz');
+        } catch (error) {
+            console.error('Failed to load questions', error);
+            alert('Sorular yüklenirken bir hata oluştu.');
+        } finally {
+            submitBtn.innerText = originalText;
+            submitBtn.disabled = false;
+        }
     }
 
     function finishQuiz() {
