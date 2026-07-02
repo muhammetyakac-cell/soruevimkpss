@@ -22,7 +22,6 @@ export default async function Home() {
       <div className="hero">
           <h1 className="gradient-text">KPSS'ye Hazırlanmanın<br/>En Etkili Yolu</h1>
           <p>Modern arayüz, anında geri bildirim ve detaylı istatistiklerle hedefine ulaş.</p>
-          </div>
       </div>
 
       <div className="categories-container">
