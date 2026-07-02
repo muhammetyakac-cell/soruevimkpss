@@ -4,8 +4,9 @@ import Link from 'next/link'
 
 export const revalidate = 60
 
-export default async function SoruPage({ params }: { params: { id: string } }) {
-  const qId = parseInt(params.id);
+export default async function SoruPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const qId = parseInt(id);
 
   if (isNaN(qId)) {
     notFound();
@@ -82,8 +83,9 @@ export default async function SoruPage({ params }: { params: { id: string } }) {
   );
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const qId = parseInt(params.id);
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  const qId = parseInt(id);
   if (isNaN(qId)) return {};
 
   const questions = await sql`SELECT question FROM questions WHERE id = ${qId} LIMIT 1`;

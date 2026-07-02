@@ -4,8 +4,8 @@ import { notFound } from 'next/navigation'
 
 export const revalidate = 60
 
-export default async function CategoryPage({ params }: { params: { id: string } }) {
-  const categoryId = params.id;
+export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
+  const { id: categoryId } = await params;
 
   // Kategori bilgilerini çek
   const cats = await sql`SELECT * FROM categories WHERE category_id = ${categoryId} LIMIT 1`;
@@ -85,9 +85,10 @@ export default async function CategoryPage({ params }: { params: { id: string } 
   );
 }
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
   return {
-    title: `${params.id.toUpperCase()} KPSS Testleri - SoruEvim`,
-    description: `${params.id} alanındaki en güncel KPSS online deneme sınavları.`
+    title: `${id.toUpperCase()} KPSS Testleri - SoruEvim`,
+    description: `${id} alanındaki en güncel KPSS online deneme sınavları.`
   }
 }

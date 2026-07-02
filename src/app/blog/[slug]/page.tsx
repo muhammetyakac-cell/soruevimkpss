@@ -4,9 +4,10 @@ import Link from 'next/link'
 
 export const revalidate = 60; // Her 60 saniyede bir önbelleği temizle
 
-export default async function BlogArticlePage({ params }: { params: { slug: string } }) {
+export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const sql = neon(process.env.DATABASE_URL!);
-  const articles = await sql`SELECT title, description, content FROM blogs WHERE slug = ${params.slug}`;
+  const articles = await sql`SELECT title, description, content FROM blogs WHERE slug = ${slug}`;
   const article = articles[0];
 
   if (!article) {
@@ -36,9 +37,10 @@ export default async function BlogArticlePage({ params }: { params: { slug: stri
   )
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   const sql = neon(process.env.DATABASE_URL!);
-  const articles = await sql`SELECT title, description FROM blogs WHERE slug = ${params.slug}`;
+  const articles = await sql`SELECT title, description FROM blogs WHERE slug = ${slug}`;
   const article = articles[0];
 
   if (!article) return {};
