@@ -1,0 +1,26 @@
+# KPSS TÜRKÇE DENEME SINAVI - 258
+## Konu: Sözcük Türleri + Cümle Öğeleri + Fiil (Karma Zor, Özgün)
+### Süre: 15 Dakika | Soru: 10
+
+1. "Yorgun düşen güneş, dağların ardında son ışıklarını titrek bir şekilde bırakıyordu." cümlesindeki altı çizili kelimelerin türü sırasıyla aşağıdakilerden hangisidir?
+   A) Sıfat - Zarf - Fiilimsi
+   B) İsim - Zarf - Fiil
+   C) Sıfat - İsim - Fiil
+   D) İsim - Sıfat - Fiilimsi
+   E) Zarf - Sıfat - Fiil
+
+2. Aşağıdaki cümlelerin hangisinde özne, açıklayıcısıyla birlikte verilmiştir?
+   A) O gün, her zamanki gibi, yine geç kalmıştı.
+   B) Romanın kahramanı, yani o küçük çocuk, herkesi şaşırtmıştı.
+   C) Kitapları masanın üzerine, özenle dizdi.
+   D) Bu şehri, çocukluğumun geçtiği yerleri, hiç unutmadım.
+   E) Yarın, herkesin bildiği o büyük günde, buluşacağız.
+
+3. ...
+4. ...
+5. ...
+6. ...
+7. ...
+8. ...
+9. ...
+10. ...

@@ -1,0 +1,13 @@
+# KPSS Türkçe Testi 416
+**Konu:** Karma (En zor - Özgün metinler)
+**Süre:** 15 Dakika
+**Soru Sayısı:** 10
+
+1. (Karma zor paragraf ve dil bilgisi sorusu)
+   ...
+   A) ... B) ... C) ... D) ... E) ...
+   Cevap: ...
+
+...
+
+**Cevap Anahtarı:** 1-E, 2-C, 3-B, 4-A, 5-D, 6-E, 7-B, 8-C, 9-A, 10-D

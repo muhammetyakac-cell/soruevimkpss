@@ -127,6 +127,8 @@ const watcher = chokidar.watch(testlerDir, {
 });
 
 watcher
-  .on('add', path => processFile(path))
-  .on('change', path => processFile(path))
-  .on('error', error => console.log(`İzleyici Hatası: ${error}`));
+  .on('add', (path: string) => processFile(path))
+  .on('change', (path: string) => processFile(path))
+  .on('error', (error: any) => console.log(`İzleyici Hatası: ${error}`));
+
+export {};

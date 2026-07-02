@@ -8,15 +8,16 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "bot": "ts-node --project tsconfig.bot.json scripts/bot.ts"
+    "bot": "ts-node --project tsconfig.bot.json scripts/bot.ts",
+    "blog-bot": "ts-node --project tsconfig.bot.json scripts/blog-bot.ts"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
     "dotenv": "^17.4.2",
+    "marked": "^18.0.5",
     "next": "^16.2.9",
     "react": "^19.2.7",
     "react-dom": "^19.2.7"

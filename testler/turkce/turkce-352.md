@@ -1,0 +1,6 @@
+# KPSS TÜRKÇE TEST 352: Karma (En Zor)
+
+1. (Karma zor bir paragraf sorusu...)
+...
+2. (Karma dil bilgisi sorusu...)
+...

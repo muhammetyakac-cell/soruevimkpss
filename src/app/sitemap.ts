@@ -42,18 +42,15 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     })
   })
 
-  // Blog Sayfaları
-  routes.push({
-    url: `${baseUrl}/blog/kpss-tarih-nasil-calisilir`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly',
-    priority: 0.8,
-  })
-  routes.push({
-    url: `${baseUrl}/blog/kpss-deneme-cozmenin-onemi`,
-    lastModified: new Date(),
-    changeFrequency: 'monthly',
-    priority: 0.8,
+  // Blog Sayfaları (Dinamik)
+  const blogs = await sql`SELECT slug, created_at FROM blogs`;
+  blogs.forEach((b) => {
+    routes.push({
+      url: `${baseUrl}/blog/${b.slug}`,
+      lastModified: new Date(b.created_at || new Date()),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    })
   })
 
   return routes as MetadataRoute.Sitemap

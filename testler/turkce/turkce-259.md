@@ -1,0 +1,26 @@
+# KPSS TÜRKÇE DENEME SINAVI - 259
+## Konu: Anlatım Bozukluğu + Ses Olayları + Yazım + Noktalama (Karma Zor)
+### Süre: 15 Dakika | Soru: 10
+
+1. Aşağıdaki cümlelerin hangisinde bir anlatım bozukluğu vardır?
+   A) Onun bu konudaki düşüncelerini biliyorum.
+   B) Yaşlı kadın, merdivenleri yavaş yavaş çıkıyordu.
+   C) Hem bu kitabı okumuş hem de notlar almıştı.
+   D) Bu kararı alırken, kimseye danışmamış, tek başına hareket etmişti.
+   E) O, hem başarılı bir öğrenci hem de çok iyi bir arkadaştı.
+
+2. Aşağıdaki cümlelerin hangisinde yazım yanlışı vardır?
+   A) TDK'nin yeni kararları yayımlandı.
+   B) Her şey yolunda gidiyor, merak etme.
+   C) O da bugün bizimle gelecek mi?
+   D) Bu kuralı bir çok kişi bilmiyordu.
+   E) Şehrimizdeki tarihi eserler restore ediliyor.
+
+3. ...
+4. ...
+5. ...
+6. ...
+7. ...
+8. ...
+9. ...
+10. ...

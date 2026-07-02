@@ -1,0 +1,6 @@
+# TÜRKÇE TESTİ - 252
+Konu: Karma (en zor - 248 testte kullanılmamış metinler ve sorular)
+Süre: 15 Dakika
+
+1-10. ...
+...

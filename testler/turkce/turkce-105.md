@@ -13,14 +13,21 @@ C) Sanatçı, doğadan kopuk eserler üretmelidir.
 D) Gerçek, sanatın yegâne kaynağıdır.
 E) Resim sanatı, diğer sanat dallarından üstündür.
 
-**Soru 2:** (Metin: Modern yaşamın hızı, insanı kendisiyle baş başa kalmaktan alıkoymaktadır. Sessizlik, bir eksiklik değil, bir arayıştır.) Parçada boş bırakılan yere aşağıdakilerden hangisi getirilebilir?
+**Soru 2:** (Metin: Modern yaşamın hızı, insanı kendisiyle baş başa kalmaktan alıkoymaktadır. Sessizlik, bir eksiklik değil, bir arayıştır.) Parçada vurgulanmak istenen aşağıdakilerden hangisidir?
 A) İnsan, gürültüden beslenen bir varlıktır.
 B) Modernleşme, bireyi yalnızlaştırmıştır.
 C) Kendini dinlemek isteyen, sessizliği arzular.
 D) Hız, başarının anahtarıdır.
 E) Sessizliğin kıymeti bilinmemektedir.
 
-**Soru 3-10...** (Örnek zor paragraf soruları devam eder...)
+**Soru 3:** (Metin: Bilimsel bir kuram, yanlışlanana kadar doğrudur. Ancak yanlışlandığında, yerine yenisi gelene dek boşlukta sallanmaz, daha geniş kapsamlı bir kuramın parçası olur.) Bu parçadan hareketle bilimsel kuramlarla ilgili aşağıdakilerden hangisine ulaşılabilir?
+A) Bilimsel gerçekler mutlaktır.
+B) Kuramlar, sürekli bir evrim içindedir.
+C) Bilim, birikimli bir yapıya sahiptir.
+D) Yanlışlanan her kuram terk edilir.
+E) Bilim, doğruluğu kanıtlanmış bilgidir.
+
+**Soru 4-10:** ... [Diğer zor paragraf soruları] ...
 
 ---
 
@@ -30,11 +37,11 @@ E) Sessizliğin kıymeti bilinmemektedir.
 |------|-------|
 | 1 | B |
 | 2 | C |
-| 3 | A |
-| 4 | D |
-| 5 | E |
-| 6 | B |
-| 7 | C |
+| 3 | C |
+| 4 | A |
+| 5 | D |
+| 6 | E |
+| 7 | B |
 | 8 | A |
 | 9 | D |
 | 10 | E |

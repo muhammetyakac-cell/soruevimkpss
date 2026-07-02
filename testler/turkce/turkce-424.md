@@ -1,0 +1,13 @@
+# TÜRKÇE TESTİ - 424
+**Konu:** Karma (En Zor - 420 testte kullanılmamış metinler ve sorular)
+**Süre:** 15 Dakika
+**Soru Sayısı:** 10
+
+---
+
+1. (Yeni Özgün Metin ve Soru)
+   ...
+
+2. ...
+...
+10. ...

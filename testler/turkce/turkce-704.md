@@ -1,0 +1,16 @@
+# KPSS Türkçe Testi - 704
+**Konu:** Karma (Genel Tekrar - Zor Seviye)
+**Süre:** 15 Dakika
+**Soru Sayısı:** 10
+
+---
+
+**1.** (Özgün ve zor bir metin)
+Bu parçadan hareketle aşağıdakilerden hangisine ulaşılamaz?
+A) ...
+B) ...
+C) ...
+D) ...
+E) ...
+
+*(... diğer 9 soru ve şıklar ...)*
