@@ -22,21 +22,25 @@ export default async function Home() {
       <div className="hero">
           <h1 className="gradient-text">KPSS'ye Hazırlanmanın<br/>En Etkili Yolu</h1>
           <p>Modern arayüz, anında geri bildirim ve detaylı istatistiklerle hedefine ulaş.</p>
-          
-          <div className="stats-container">
-              <div className="glass-card stat-box">
-                  <div className="stat-value" id="global-total-solved">0</div>
-                  <div className="text-muted">Çözülen Soru</div>
-              </div>
-              <div className="glass-card stat-box">
-                  <div className="stat-value text-primary" id="global-success-rate">%0</div>
-                  <div className="text-muted">Başarı Oranı</div>
-              </div>
           </div>
       </div>
 
       <div className="categories-container">
-          <h2>Konu Alanları</h2>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', marginBottom: '1.5rem', flexWrap: 'wrap', gap: '1rem' }}>
+              <h2 style={{ margin: 0 }}>Konu Alanları</h2>
+              
+              <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                  <div className="glass-card" style={{ padding: '0.5rem 1rem', display: 'flex', gap: '0.5rem', alignItems: 'center', borderRadius: '999px' }}>
+                      <span className="text-muted" style={{ fontSize: '0.85rem' }}>Çözülen:</span>
+                      <span className="text-primary" id="global-total-solved" style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>0</span>
+                  </div>
+                  <div className="glass-card" style={{ padding: '0.5rem 1rem', display: 'flex', gap: '0.5rem', alignItems: 'center', borderRadius: '999px' }}>
+                      <span className="text-muted" style={{ fontSize: '0.85rem' }}>Başarı:</span>
+                      <span className="text-primary" id="global-success-rate" style={{ fontWeight: 700, fontFamily: 'var(--font-heading)' }}>%0</span>
+                  </div>
+              </div>
+          </div>
+
           <div className="categories-grid">
               {categoriesWithCounts.map((cat) => (
                 <Link 
