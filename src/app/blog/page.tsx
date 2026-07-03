@@ -1,5 +1,6 @@
 import { neon } from '@neondatabase/serverless'
 import Link from 'next/link'
+import LoadMoreBlogs from '@/components/LoadMoreBlogs'
 
 export const metadata = {
   title: 'KPSS Rehberliği ve Blog - SoruEvim',
@@ -62,7 +63,15 @@ export default async function BlogListPage({ searchParams }: { searchParams: Pro
                     </span>
                   </div>
                   <h3 style={{ marginBottom: '0.8rem', color: 'var(--primary-color)' }}>{article.title}</h3>
-                  <p className="text-muted" style={{ fontSize: '0.9rem', flexGrow: 1 }}>{article.description}</p>
+                  <p className="text-muted" style={{ 
+                    fontSize: '0.9rem', 
+                    flexGrow: 1,
+                    display: '-webkit-box',
+                    WebkitLineClamp: 3,
+                    WebkitBoxOrient: 'vertical',
+                    overflow: 'hidden',
+                    textOverflow: 'ellipsis'
+                  }}>{article.description}</p>
               </div>
             </Link>
           ))}
@@ -102,10 +111,20 @@ async function RecentClusters() {
                 </span>
               </div>
               <h3 style={{ marginBottom: '0.8rem', color: 'var(--text-color)' }}>{article.title}</h3>
-              <p className="text-muted" style={{ fontSize: '0.9rem', flexGrow: 1 }}>{article.description}</p>
+              <p className="text-muted" style={{ 
+                fontSize: '0.9rem', 
+                flexGrow: 1,
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis'
+              }}>{article.description}</p>
           </div>
         </Link>
       ))}
+      {/* 20 yazından sonraki yazıları getiren LoadMore bileşeni */}
+      <LoadMoreBlogs initialCount={20} />
     </>
   )
 }
