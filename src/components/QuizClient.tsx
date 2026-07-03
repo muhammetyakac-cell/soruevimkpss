@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { saveProgress } from '@/app/actions/progress'
 
 export default function QuizClient({ category, testIndex, questions }: any) {
   const [currentIndex, setCurrentIndex] = useState(0)
@@ -43,9 +44,12 @@ export default function QuizClient({ category, testIndex, questions }: any) {
     setUserAnswers(newAnswers)
   }
 
-  const nextQuestion = () => {
+  const nextQuestion = async () => {
     if (currentIndex + 1 >= questions.length) {
       setIsFinished(true)
+      const emptyCount = questions.length - score.correct - score.wrong
+      // Sınav bittiğinde kaydet
+      await saveProgress(category.category_id, testIndex, score.correct, score.wrong, emptyCount, userAnswers)
     } else {
       setCurrentIndex(i => i + 1)
       setIsAnswered(userAnswers[currentIndex + 1] !== null)
@@ -108,9 +112,39 @@ export default function QuizClient({ category, testIndex, questions }: any) {
             </div>
         </div>
 
-        <div className="results-actions">
+        <div className="results-actions" style={{ marginBottom: '2rem' }}>
             <button onClick={() => window.location.reload()} className="btn-primary">↻ Tekrar Çöz</button>
             <Link href={`/kategori/${category.category_id}`} className="btn-outline">Kategoriye Dön</Link>
+        </div>
+
+        <div className="detailed-report" style={{ textAlign: 'left', marginTop: '2rem', borderTop: '1px solid var(--border-color)', paddingTop: '2rem' }}>
+          <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem' }}>Detaylı Soru Analizi</h3>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+            {questions.map((q: any, i: number) => {
+              const ans = userAnswers[i];
+              if (!ans) return null;
+              const isCorrect = ans.isCorrect;
+              return (
+                <div key={i} className="glass-card" style={{ padding: '1rem', borderLeft: `4px solid ${isCorrect ? 'var(--success)' : 'var(--error)'}` }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                    <strong>Soru {i + 1}</strong>
+                    <span style={{ color: isCorrect ? 'var(--success)' : 'var(--error)' }}>
+                      {isCorrect ? '✓ Doğru' : '✗ Yanlış'}
+                    </span>
+                  </div>
+                  <div style={{ fontSize: '0.9rem', marginBottom: '0.5rem', opacity: 0.9 }} dangerouslySetInnerHTML={{ __html: q.question }} />
+                  <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
+                    Senin Cevabın: <strong>{labels[ans.selectedOption]}</strong> {isCorrect ? '' : ` | Doğru Cevap: ${labels[q.correctAnswer]}`}
+                  </div>
+                  {q.explanation && (
+                    <div style={{ marginTop: '0.8rem', padding: '0.8rem', background: 'rgba(0,0,0,0.2)', borderRadius: '4px', fontSize: '0.85rem' }}>
+                      <strong>Açıklama:</strong> <span dangerouslySetInnerHTML={{ __html: q.explanation }} />
+                    </div>
+                  )}
+                </div>
+              )
+            })}
+          </div>
         </div>
       </div>
     )
@@ -118,7 +152,7 @@ export default function QuizClient({ category, testIndex, questions }: any) {
 
   return (
     <div>
-      <div className="breadcrumb" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+      <div className="breadcrumb" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', overflowX: 'auto', whiteSpace: 'nowrap' }}>
         <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Ana Sayfa</Link> &gt; 
         <Link href={`/kategori/${category.category_id}`} style={{ color: 'var(--text-muted)', textDecoration: 'none' }}> {category.title}</Link> &gt; 
         <span className="text-primary"> Test {testIndex + 1}</span>

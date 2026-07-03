@@ -1,6 +1,9 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Link from 'next/link'
+import { getSession } from '@/lib/auth'
+import LogoutButton from '@/components/LogoutButton'
+import SearchBar from '@/components/SearchBar'
 
 export const metadata: Metadata = {
   title: 'SoruEvim KPSS - İnteraktif Hazırlık',
@@ -13,11 +16,13 @@ export const metadata: Metadata = {
   }
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
+  const session = await getSession()
+
   return (
     <html lang="tr">
       <body>
@@ -32,8 +37,17 @@ export default function RootLayout({
                   <span>SoruEvim <span className="text-primary">KPSS</span></span>
                 </Link>
                 <nav style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+                    <SearchBar />
                     <Link href="/blog" className="btn-outline" style={{ padding: '0.5rem 1.5rem' }}>Blog</Link>
                     <Link href="/#home" className="btn-outline" style={{ padding: '0.5rem 1.5rem' }}>Kategoriler</Link>
+                    {session ? (
+                      <div style={{ display: 'flex', gap: '1rem', alignItems: 'center', marginLeft: '1rem', borderLeft: '1px solid var(--border-color)', paddingLeft: '1rem' }}>
+                        <span style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{session.name}</span>
+                        <LogoutButton />
+                      </div>
+                    ) : (
+                      <Link href="/giris" className="btn-primary" style={{ padding: '0.5rem 1.5rem' }}>Giriş Yap</Link>
+                    )}
                 </nav>
             </div>
         </header>

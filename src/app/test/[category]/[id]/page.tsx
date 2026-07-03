@@ -41,7 +41,7 @@ export default async function TestPage({ params }: { params: Promise<{ category:
   }));
 
   return (
-    <section className="page-section active" style={{ display: 'block' }}>
+    <section className={`page-section active theme-${categoryId}`} style={{ display: 'block' }}>
       <QuizClient 
         category={category} 
         testIndex={testIndex} 

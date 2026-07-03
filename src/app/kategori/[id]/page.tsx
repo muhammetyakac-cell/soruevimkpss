@@ -1,6 +1,7 @@
 import { sql } from '@/lib/db'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
+import { getSession } from '@/lib/auth'
 
 export const revalidate = 60
 
@@ -37,9 +38,17 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
     tests.push({ index: i, count: testQs.length, previewText });
   }
 
+  const session = await getSession();
+  const solvedTests = new Set<number>();
+  
+  if (session) {
+    const progress = await sql`SELECT test_index FROM user_progress WHERE user_id = ${session.userId} AND category_id = ${categoryId}`;
+    progress.forEach((p: any) => solvedTests.add(p.test_index));
+  }
+
   return (
-    <section className="page-section active" style={{ display: 'block' }}>
-      <div className="breadcrumb" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
+    <section className={`page-section active theme-${categoryId}`} style={{ display: 'block' }}>
+      <div className="breadcrumb" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', overflowX: 'auto', whiteSpace: 'nowrap' }}>
         <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Ana Sayfa</Link> &gt; 
         <span className="text-primary"> {category.title}</span>
       </div>
@@ -57,28 +66,36 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
         <p className="text-muted">Bu kategoriye ait henüz test bulunmuyor.</p>
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1rem' }}>
-          {tests.map((t) => (
-            <Link 
-              key={t.index} 
-              href={`/test/${categoryId}/${t.index}`}
-              style={{ textDecoration: 'none', color: 'inherit' }}
-            >
-              <div className="glass-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', padding: '1.2rem', height: '100%' }}>
-                  <div>
-                      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
-                          <h4 style={{ margin: 0 }}>Test {t.index + 1}</h4>
-                          <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t.count} Soru</span>
+          {tests.map((t) => {
+            const isSolved = solvedTests.has(t.index);
+            return (
+              <Link 
+                key={t.index} 
+                href={`/test/${categoryId}/${t.index}`}
+                style={{ textDecoration: 'none', color: 'inherit' }}
+              >
+                <div className="glass-card test-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', padding: '1.2rem', height: '100%', position: 'relative' }}>
+                    {isSolved && (
+                      <div style={{ position: 'absolute', top: '-10px', right: '-10px', background: 'var(--success)', color: 'white', borderRadius: '50%', width: '28px', height: '28px', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '14px', boxShadow: '0 4px 10px rgba(0,0,0,0.3)', zIndex: 10 }}>
+                        ✓
                       </div>
-                      <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem', fontStyle: 'italic' }}>
-                        "{t.previewText}"
-                      </p>
-                  </div>
-                  <button className="btn-primary" style={{ width: '100%', padding: '0.6rem' }}>
-                      ▶ Başla
-                  </button>
-              </div>
-            </Link>
-          ))}
+                    )}
+                    <div>
+                        <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}>
+                            <h4 style={{ margin: 0 }}>Test {t.index + 1}</h4>
+                            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{t.count} Soru</span>
+                        </div>
+                        <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1rem', fontStyle: 'italic' }}>
+                          "{t.previewText}"
+                        </p>
+                    </div>
+                    <button className={isSolved ? "btn-outline" : "btn-primary"} style={{ width: '100%', padding: '0.6rem', color: isSolved ? 'var(--success)' : undefined, borderColor: isSolved ? 'var(--success)' : undefined }}>
+                        {isSolved ? '✓ Çözüldü (Tekrar Çöz)' : '▶ Başla'}
+                    </button>
+                </div>
+              </Link>
+            )
+          })}
         </div>
       )}
     </section>
