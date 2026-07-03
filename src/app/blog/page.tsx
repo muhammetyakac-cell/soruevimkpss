@@ -54,7 +54,7 @@ export default async function BlogListPage({ searchParams }: { searchParams: Pro
             <Link 
               href={`/blog/${article.slug}`} 
               key={article.slug} 
-              style={{ textDecoration: 'none', color: 'inherit' }}
+              style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}
             >
               <div className="glass-card test-card" style={{ cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -65,7 +65,6 @@ export default async function BlogListPage({ searchParams }: { searchParams: Pro
                   <h3 style={{ marginBottom: '0.8rem', color: 'var(--primary-color)' }}>{article.title}</h3>
                   <p className="text-muted" style={{ 
                     fontSize: '0.9rem', 
-                    flexGrow: 1,
                     display: '-webkit-box',
                     WebkitLineClamp: 3,
                     WebkitBoxOrient: 'vertical',
@@ -102,7 +101,7 @@ async function RecentClusters() {
         <Link 
           href={`/blog/${article.slug}`} 
           key={article.slug} 
-          style={{ textDecoration: 'none', color: 'inherit' }}
+          style={{ textDecoration: 'none', color: 'inherit', display: 'block', height: '100%' }}
         >
           <div className="glass-card test-card" style={{ cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
@@ -113,7 +112,6 @@ async function RecentClusters() {
               <h3 style={{ marginBottom: '0.8rem', color: 'var(--text-color)' }}>{article.title}</h3>
               <p className="text-muted" style={{ 
                 fontSize: '0.9rem', 
-                flexGrow: 1,
                 display: '-webkit-box',
                 WebkitLineClamp: 3,
                 WebkitBoxOrient: 'vertical',
