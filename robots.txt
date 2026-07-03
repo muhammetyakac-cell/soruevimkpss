@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://soruevimkpss.vercel.app/api/sitemap.xml
+Sitemap: https://soruevimkpss.vercel.app/sitemap.xml
