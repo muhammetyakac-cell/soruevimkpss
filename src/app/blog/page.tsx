@@ -4,7 +4,10 @@ import LoadMoreBlogs from '@/components/LoadMoreBlogs'
 
 export const metadata = {
   title: 'KPSS Rehberliği ve Blog - SoruEvim',
-  description: 'KPSS sınav taktikleri, çalışma programları, deneme çözme yöntemleri ve güncel duyurular.'
+  description: 'KPSS sınav taktikleri, çalışma programları, deneme çözme yöntemleri ve güncel duyurular.',
+  alternates: {
+    canonical: '/blog'
+  }
 }
 
 export default async function BlogListPage({ searchParams }: { searchParams: Promise<{ kategori?: string }> }) {

@@ -94,6 +94,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
 
   return {
     title: `Soru #${qId} - KPSS Çıkmış ve Örnek Sorular | SoruEvim`,
-    description: cleanQuestionText.substring(0, 150) + '...'
+    description: cleanQuestionText.substring(0, 150) + '...',
+    alternates: {
+      canonical: `/soru/${qId}`
+    }
   }
 }

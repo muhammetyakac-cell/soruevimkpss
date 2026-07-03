@@ -6,13 +6,26 @@ import LogoutButton from '@/components/LogoutButton'
 import SearchBar from '@/components/SearchBar'
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://soruevimkpss.vercel.app'),
   title: 'SoruEvim KPSS - İnteraktif Hazırlık',
   description: 'KPSS adayları için interaktif, modern ve ücretsiz test çözme platformu.',
   openGraph: {
     title: 'SoruEvim KPSS',
     description: 'KPSS adayları için interaktif test çözme platformu.',
     url: 'https://soruevimkpss.vercel.app/',
+    siteName: 'SoruEvim KPSS',
+    images: [
+      {
+        url: '/og-image.png',
+        width: 1200,
+        height: 630,
+        alt: 'SoruEvim KPSS',
+      },
+    ],
     type: 'website',
+  },
+  alternates: {
+    canonical: '/',
   }
 }
 

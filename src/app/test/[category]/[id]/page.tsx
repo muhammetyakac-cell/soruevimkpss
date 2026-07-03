@@ -53,6 +53,9 @@ export async function generateMetadata({ params }: { params: Promise<{ category:
   const { category, id } = await params;
   return {
     title: `Test ${parseInt(id) + 1} - ${category.toUpperCase()} KPSS - SoruEvim`,
-    description: `${category} alanında Test ${parseInt(id) + 1}. Gerçek sınav deneyimi ile çözün.`
+    description: `${category} alanında Test ${parseInt(id) + 1}. Gerçek sınav deneyimi ile çözün.`,
+    alternates: {
+      canonical: `/test/${category}/${id}`
+    }
   }
 }

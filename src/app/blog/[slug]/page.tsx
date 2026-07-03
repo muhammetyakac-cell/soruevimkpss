@@ -145,6 +145,9 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   return {
     title: `${article.title} | SoruEvim Blog`,
-    description: article.description
+    description: article.description,
+    alternates: {
+      canonical: `/blog/${slug}`
+    }
   }
 }

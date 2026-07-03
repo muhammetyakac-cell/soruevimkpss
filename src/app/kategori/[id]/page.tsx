@@ -44,8 +44,31 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
     progress.forEach((p: any) => solvedTests.add(p.test_index));
   }
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Ana Sayfa',
+        'item': 'https://soruevimkpss.vercel.app/'
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': category.title,
+        'item': `https://soruevimkpss.vercel.app/kategori/${categoryId}`
+      }
+    ]
+  };
+
   return (
     <section className={`page-section active theme-${categoryId}`} style={{ display: 'block' }}>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
+      />
       <div className="breadcrumb" style={{ marginBottom: '1rem', fontSize: '0.9rem', color: 'var(--text-muted)', overflowX: 'auto', whiteSpace: 'nowrap' }}>
         <Link href="/" style={{ color: 'var(--text-muted)', textDecoration: 'none' }}>Ana Sayfa</Link> &gt; 
         <span className="text-primary"> {category.title}</span>
@@ -104,6 +127,9 @@ export async function generateMetadata({ params }: { params: Promise<{ id: strin
   const { id } = await params;
   return {
     title: `${id.toUpperCase()} KPSS Testleri - SoruEvim`,
-    description: `${id} alanındaki en güncel KPSS online deneme sınavları.`
+    description: `${id} alanındaki en güncel KPSS online deneme sınavları.`,
+    alternates: {
+      canonical: `/kategori/${id}`
+    }
   }
 }

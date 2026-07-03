@@ -55,8 +55,35 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       priority: 0.8,
     }));
     routes.push(...categoryRoutes);
+    
+    // Test sayfaları
+    for (const cat of categories) {
+      const tests = await sql`SELECT DISTINCT test_index FROM questions WHERE category_id = ${cat.category_id}`;
+      const testRoutes: MetadataRoute.Sitemap = tests.map((t: any) => ({
+        url: `${baseUrl}/test/${cat.category_id}/${t.test_index}`,
+        lastModified: new Date(),
+        changeFrequency: 'monthly',
+        priority: 0.8,
+      }));
+      routes.push(...testRoutes);
+    }
   } catch (error) {
-    console.error('Sitemap category fetch error', error);
+    console.error('Sitemap category/test fetch error', error);
+  }
+
+  try {
+    // Soru sayfaları - Google limitleri düşünülerek en yeni veya popüler olanlar eklenebilir. 
+    // Tümünü eklemek long-tail trafik için çok faydalıdır.
+    const questions = await sql`SELECT id FROM questions`;
+    const questionRoutes: MetadataRoute.Sitemap = questions.map((q: any) => ({
+      url: `${baseUrl}/soru/${q.id}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.6,
+    }));
+    routes.push(...questionRoutes);
+  } catch (error) {
+    console.error('Sitemap questions fetch error', error);
   }
 
   return routes;
