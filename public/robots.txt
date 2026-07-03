@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://soruevimkpss.vercel.app/sitemap.xml
+Sitemap: https://www.kpssevim.blog/sitemap.xml

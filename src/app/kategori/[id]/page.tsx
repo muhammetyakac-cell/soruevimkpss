@@ -52,13 +52,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
         '@type': 'ListItem',
         'position': 1,
         'name': 'Ana Sayfa',
-        'item': 'https://soruevimkpss.vercel.app/'
+        'item': 'https://www.kpssevim.blog/'
       },
       {
         '@type': 'ListItem',
         'position': 2,
         'name': category.title,
-        'item': `https://soruevimkpss.vercel.app/kategori/${categoryId}`
+        'item': `https://www.kpssevim.blog/kategori/${categoryId}`
       }
     ]
   };

@@ -24,7 +24,7 @@ export default function TermsOfUsePage() {
           </p>
 
           <p style={{ marginBottom: '1.5rem' }}>
-            Lütfen SoruEvim ("biz", "bizim" veya "Platform") web sitesini (https://soruevimkpss.vercel.app/) kullanmadan önce bu Kullanım Şartları'nı dikkatlice okuyunuz. Siteye erişim sağlayarak veya hizmetlerimizi kullanarak, bu şartların tamamını okuduğunuzu, anladığınızı ve yasal olarak bağlayıcı olduğunu kabul etmiş sayılırsınız. Şartların herhangi bir bölümünü kabul etmiyorsanız, platformu kullanmayı derhal bırakmalısınız.
+            Lütfen SoruEvim ("biz", "bizim" veya "Platform") web sitesini (https://www.kpssevim.blog/) kullanmadan önce bu Kullanım Şartları'nı dikkatlice okuyunuz. Siteye erişim sağlayarak veya hizmetlerimizi kullanarak, bu şartların tamamını okuduğunuzu, anladığınızı ve yasal olarak bağlayıcı olduğunu kabul etmiş sayılırsınız. Şartların herhangi bir bölümünü kabul etmiyorsanız, platformu kullanmayı derhal bırakmalısınız.
           </p>
 
           <h3 style={{ marginTop: '2rem', marginBottom: '1rem', color: 'var(--primary-color)' }}>1. Hizmetlerin Kapsamı ve Değişiklikler</h3>

@@ -4,7 +4,7 @@ import { neon } from '@neondatabase/serverless'
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const sql = neon(process.env.DATABASE_URL!);
   
-  const baseUrl = 'https://soruevimkpss.vercel.app';
+  const baseUrl = 'https://www.kpssevim.blog';
   
   const routes: MetadataRoute.Sitemap = [
     {

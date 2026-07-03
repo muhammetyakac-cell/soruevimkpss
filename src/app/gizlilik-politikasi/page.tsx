@@ -24,7 +24,7 @@ export default function PrivacyPolicyPage() {
           </p>
 
           <p style={{ marginBottom: '1.5rem' }}>
-            SoruEvim ("biz", "bizim" veya "Platform") olarak, gizliliğinize ve kişisel verilerinizin güvenliğine en yüksek önemi vermekteyiz. Bu Gizlilik Politikası, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") ve ilgili mevzuat uyarınca, web sitemizi (https://soruevimkpss.vercel.app/) ziyaret ettiğinizde ve hizmetlerimizi kullandığınızda bilgilerinizin nasıl toplandığını, kullanıldığını, paylaşıldığını ve korunduğunu açıklamaktadır.
+            SoruEvim ("biz", "bizim" veya "Platform") olarak, gizliliğinize ve kişisel verilerinizin güvenliğine en yüksek önemi vermekteyiz. Bu Gizlilik Politikası, 6698 sayılı Kişisel Verilerin Korunması Kanunu ("KVKK") ve ilgili mevzuat uyarınca, web sitemizi (https://www.kpssevim.blog/) ziyaret ettiğinizde ve hizmetlerimizi kullandığınızda bilgilerinizin nasıl toplandığını, kullanıldığını, paylaşıldığını ve korunduğunu açıklamaktadır.
           </p>
 
           <h3 style={{ marginTop: '2rem', marginBottom: '1rem', color: 'var(--primary-color)' }}>1. Toplanan Kişisel Veriler</h3>

@@ -20,7 +20,7 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
     'author': {
       '@type': 'Organization',
       'name': 'SoruEvim KPSS',
-      'url': 'https://soruevimkpss.vercel.app'
+      'url': 'https://www.kpssevim.blog'
     }
   };
 
@@ -32,19 +32,19 @@ export default async function BlogArticlePage({ params }: { params: Promise<{ sl
         '@type': 'ListItem',
         'position': 1,
         'name': 'Ana Sayfa',
-        'item': 'https://soruevimkpss.vercel.app/'
+        'item': 'https://www.kpssevim.blog/'
       },
       {
         '@type': 'ListItem',
         'position': 2,
         'name': 'Blog',
-        'item': 'https://soruevimkpss.vercel.app/blog'
+        'item': 'https://www.kpssevim.blog/blog'
       },
       {
         '@type': 'ListItem',
         'position': 3,
         'name': article.title,
-        'item': `https://soruevimkpss.vercel.app/blog/${slug}`
+        'item': `https://www.kpssevim.blog/blog/${slug}`
       }
     ]
   };
