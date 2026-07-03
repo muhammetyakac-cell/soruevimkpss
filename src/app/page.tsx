@@ -61,15 +61,15 @@ export default async function Home() {
       {/* FAQ SECTION */}
       <div className="faq-container" style={{ marginTop: '4rem', textAlign: 'left' }}>
           <h2 style={{ marginBottom: '1.5rem' }}>Sıkça Sorulan Sorular (SSS)</h2>
-          <div className="glass-card" style={{ marginBottom: '1rem' }}>
+          <div className="glass-card faq-card">
               <h4 style={{ marginBottom: '0.5rem' }}>KPSS testlerini ücretsiz mi çözüyorum?</h4>
               <p className="text-muted">Evet, SoruEvim platformundaki Tarih, Coğrafya, Vatandaşlık, Matematik ve Türkçe gibi tüm KPSS online deneme ve yaprak testleri tamamen ücretsizdir.</p>
           </div>
-          <div className="glass-card" style={{ marginBottom: '1rem' }}>
+          <div className="glass-card faq-card">
               <h4 style={{ marginBottom: '0.5rem' }}>Online KPSS denemeleri güncel mi?</h4>
               <p className="text-muted">Sistemimize düzenli olarak yeni müfredata ve ÖSYM'nin yeni nesil soru tiplerine uygun güncel bilgiler ve testler otomatik olarak eklenmektedir.</p>
           </div>
-          <div className="glass-card" style={{ marginBottom: '1rem' }}>
+          <div className="glass-card faq-card">
               <h4 style={{ marginBottom: '0.5rem' }}>Çözdüğüm testlerin sonucunu görebilir miyim?</h4>
               <p className="text-muted">Testi bitirdiğiniz anda kaç doğru, kaç yanlış yaptığınızı görebilir, soruların detaylı çözümlerini ve açıklamalarını anında inceleyebilirsiniz. İlerlemeniz cihazınıza kaydedilir.</p>
           </div>

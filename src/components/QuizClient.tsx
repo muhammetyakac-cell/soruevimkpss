@@ -9,10 +9,23 @@ export default function QuizClient({ category, testIndex, questions }: any) {
   const [userAnswers, setUserAnswers] = useState<any[]>(new Array(questions.length).fill(null))
   const [isAnswered, setIsAnswered] = useState(false)
   const [isFinished, setIsFinished] = useState(false)
+  const [seconds, setSeconds] = useState(0)
 
   const q = questions[currentIndex]
   const currentAnswer = userAnswers[currentIndex]
   const labels = ['A', 'B', 'C', 'D', 'E']
+
+  useEffect(() => {
+    if (isFinished) return
+    const interval = setInterval(() => setSeconds(s => s + 1), 1000)
+    return () => clearInterval(interval)
+  }, [isFinished])
+
+  const formatTime = (totalSeconds: number) => {
+    const m = Math.floor(totalSeconds / 60)
+    const s = totalSeconds % 60
+    return `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`
+  }
 
   const handleOptionClick = (index: number) => {
     if (isAnswered) return
@@ -46,11 +59,34 @@ export default function QuizClient({ category, testIndex, questions }: any) {
     }
   }
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (isFinished) return
+      
+      // 1-5 keys for options
+      if (['1', '2', '3', '4', '5'].includes(e.key)) {
+        const index = parseInt(e.key) - 1
+        if (q?.options && index < q.options.length && !isAnswered) {
+          handleOptionClick(index)
+        }
+      }
+      
+      // Enter key for next question
+      if (e.key === 'Enter' && isAnswered) {
+        nextQuestion()
+      }
+    }
+    
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [isFinished, isAnswered, currentIndex, q])
+
   if (isFinished) {
     const emptyCount = questions.length - score.correct - score.wrong
     return (
       <div className="results-container">
-        <h2 className="gradient-text" style={{ fontSize: '2.5rem', marginBottom: '2rem' }}>Test Tamamlandı!</h2>
+        <h2 className="gradient-text" style={{ fontSize: '2.5rem', marginBottom: '1rem' }}>Test Tamamlandı!</h2>
+        <p className="text-muted" style={{ marginBottom: '2rem' }}>Çözüm Süresi: {formatTime(seconds)}</p>
         
         <div className="score-circle">
             <div className="score-value">{Math.round((score.correct / questions.length) * 100)}</div>
@@ -90,9 +126,13 @@ export default function QuizClient({ category, testIndex, questions }: any) {
 
       <div className="quiz-header">
         <h3 id="quiz-title">{category.title} - Test {testIndex + 1}</h3>
-        <div className="quiz-meta">
+        <div className="quiz-meta" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+            <div className="timer" style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+              <span style={{ fontSize: '1.2rem' }}>⏱</span>
+              <span>{formatTime(seconds)}</span>
+            </div>
             <div className="text-muted">Soru: {currentIndex + 1}/{questions.length}</div>
-            <Link href={`/kategori/${category.category_id}`} className="btn-outline">Çıkış</Link>
+            <Link href={`/kategori/${category.category_id}`} className="btn-outline" style={{ padding: '0.4rem 1rem', fontSize: '0.9rem' }}>Çıkış</Link>
         </div>
       </div>
 
@@ -123,6 +163,7 @@ export default function QuizClient({ category, testIndex, questions }: any) {
                 onClick={() => handleOptionClick(idx)}
               >
                 <span className="option-letter">{letter})</span> <span>{text}</span>
+                {!isAnswered && <span className="text-muted" style={{ marginLeft: 'auto', fontSize: '0.8rem', opacity: 0.5 }}>{idx + 1}</span>}
               </button>
             )
           })}
@@ -136,6 +177,9 @@ export default function QuizClient({ category, testIndex, questions }: any) {
 
       <div className="quiz-footer">
           <button className="btn-outline" disabled={currentIndex === 0} onClick={prevQuestion}>← Önceki</button>
+          <div className="text-muted" style={{ fontSize: '0.85rem' }}>
+            {isAnswered ? 'Devam etmek için Enter\'a bas' : 'Şık seçmek için 1-5 arası tuşları kullan'}
+          </div>
           <button className="btn-primary" disabled={!isAnswered} onClick={nextQuestion}>
             {currentIndex + 1 === questions.length ? 'Testi Bitir' : 'Sonraki Soru →'}
           </button>

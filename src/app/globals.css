@@ -177,6 +177,17 @@ button {
   pointer-events: none;
 }
 
+.faq-card {
+  padding: 2rem;
+  margin-bottom: 1.5rem;
+  cursor: pointer;
+}
+
+.faq-card:hover {
+  transform: translateY(-2px);
+  border-color: hsla(0, 0%, 100%, 0.2);
+}
+
 /* Layout & Sections */
 header {
   padding: 1.5rem 0;
