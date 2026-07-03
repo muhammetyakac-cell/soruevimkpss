@@ -33,6 +33,8 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 body {
@@ -175,6 +177,13 @@ button {
   top: 0; left: 0; right: 0; bottom: 0;
   background: radial-gradient(circle at top left, hsla(0, 0%, 100%, 0.05) 0%, transparent 50%);
   pointer-events: none;
+}
+
+.glass-card p {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 .faq-card {
@@ -515,6 +524,10 @@ select:focus {
   font-weight: 500;
   margin-bottom: 2rem;
   line-height: 1.7;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 .options-container {
@@ -579,6 +592,10 @@ select:focus {
   border-radius: 0 0.5rem 0.5rem 0;
   display: none;
   animation: fadeIn 0.3s ease forwards;
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
 }
 
 .explanation-box.show {
