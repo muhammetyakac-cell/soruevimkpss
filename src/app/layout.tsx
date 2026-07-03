@@ -97,8 +97,8 @@ export default async function RootLayout({
               <div>
                 <h4 style={{ marginBottom: '1rem' }}>Yasal</h4>
                 <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
-                  <li><a href="#" className="text-muted" style={{ textDecoration: 'none' }}>Gizlilik Politikası</a></li>
-                  <li><a href="#" className="text-muted" style={{ textDecoration: 'none' }}>Kullanım Şartları</a></li>
+                  <li><Link href="/gizlilik-politikasi" className="text-muted" style={{ textDecoration: 'none' }}>Gizlilik Politikası</Link></li>
+                  <li><Link href="/kullanim-sartlari" className="text-muted" style={{ textDecoration: 'none' }}>Kullanım Şartları</Link></li>
                 </ul>
               </div>
             </div>
