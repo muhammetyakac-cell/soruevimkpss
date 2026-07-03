@@ -47,7 +47,8 @@ export default async function BlogListPage({ searchParams }: { searchParams: Pro
           <p className="text-muted">Bu filtrede henüz yazı bulunmamaktadır.</p>
         )}
 
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+        {/* Ana Rehberler veya Kategori Yazıları */}
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem', marginBottom: '4rem' }}>
           {articles.map((article: any) => (
             <Link 
               href={`/blog/${article.slug}`} 
@@ -66,6 +67,45 @@ export default async function BlogListPage({ searchParams }: { searchParams: Pro
             </Link>
           ))}
         </div>
+
+        {/* Eğer ana sayfadaysak ve kategori seçilmemişse, son eklenen alt yazıları da gösterelim */}
+        {!kategori && (
+          <div style={{ marginTop: '3rem' }}>
+            <h2 className="gradient-text" style={{ fontSize: '2rem', marginBottom: '1.5rem' }}>Son Eklenen Yazılar</h2>
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))', gap: '1.5rem' }}>
+              {/* Bu kısımda server componenti üzerinden taze verileri çekmek mantıklı */}
+              <RecentClusters />
+            </div>
+          </div>
+        )}
     </section>
+  )
+}
+
+// Yeni bir bileşen: Sadece cluster yazıları çeker
+async function RecentClusters() {
+  const sql = neon(process.env.DATABASE_URL!);
+  const recent = await sql`SELECT slug, title, description, type, created_at FROM blogs WHERE type = 'cluster' ORDER BY created_at DESC LIMIT 20`;
+
+  return (
+    <>
+      {recent.map((article: any) => (
+        <Link 
+          href={`/blog/${article.slug}`} 
+          key={article.slug} 
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
+          <div className="glass-card test-card" style={{ cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
+                <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', padding: '0.3rem 0.6rem', borderRadius: '4px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
+                  Alt Yazı
+                </span>
+              </div>
+              <h3 style={{ marginBottom: '0.8rem', color: 'var(--text-color)' }}>{article.title}</h3>
+              <p className="text-muted" style={{ fontSize: '0.9rem', flexGrow: 1 }}>{article.description}</p>
+          </div>
+        </Link>
+      ))}
+    </>
   )
 }
