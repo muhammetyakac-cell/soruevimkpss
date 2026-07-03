@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { getMoreClusters } from '@/app/actions/blog'
 import Link from 'next/link'
 
-export default function LoadMoreBlogs({ initialCount }: { initialCount: number }) {
+export default function LoadMoreBlogs({ initialCount, kategori }: { initialCount: number, kategori?: string }) {
   const [posts, setPosts] = useState<any[]>([])
   const [offset, setOffset] = useState(initialCount)
   const [loading, setLoading] = useState(false)
@@ -12,7 +12,7 @@ export default function LoadMoreBlogs({ initialCount }: { initialCount: number }
   const loadMore = async () => {
     setLoading(true)
     try {
-      const newPosts = await getMoreClusters(offset, 20)
+      const newPosts = await getMoreClusters(offset, 20, kategori)
       if (newPosts.length < 20) {
         setHasMore(false)
       }
@@ -36,12 +36,14 @@ export default function LoadMoreBlogs({ initialCount }: { initialCount: number }
           <div className="glass-card test-card" style={{ cursor: 'pointer', height: '100%', display: 'flex', flexDirection: 'column' }}>
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '1rem' }}>
                 <span style={{ fontSize: '0.8rem', background: 'rgba(255,255,255,0.1)', padding: '0.3rem 0.6rem', borderRadius: '4px', color: 'var(--text-muted)', textTransform: 'uppercase' }}>
-                  Alt Yazı
+                  {article.category_slug || 'BLOG'}
                 </span>
               </div>
               <h3 style={{ marginBottom: '0.8rem', color: 'var(--text-color)' }}>{article.title}</h3>
               <p className="text-muted" style={{ 
                 fontSize: '0.9rem', 
+                lineHeight: '1.5',
+                marginBottom: '0.5rem',
                 display: '-webkit-box',
                 WebkitLineClamp: 3,
                 WebkitBoxOrient: 'vertical',
