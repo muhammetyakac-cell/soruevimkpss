@@ -6,8 +6,6 @@ export const metadata = {
   description: 'KPSS sınav taktikleri, çalışma programları, deneme çözme yöntemleri ve güncel duyurular.'
 }
 
-// ISR (Incremental Static Regeneration) için sayfanın periyodik yenilenmesini sağlayabiliriz
-export const revalidate = 60; // Her 60 saniyede bir önbelleği temizle ve yeniden oluştur
 
 export default async function BlogListPage() {
   const sql = neon(process.env.DATABASE_URL!);

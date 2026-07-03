@@ -2,8 +2,6 @@ import { neon } from '@neondatabase/serverless'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
-export const revalidate = 60; // Her 60 saniyede bir önbelleği temizle
-
 export default async function BlogArticlePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const sql = neon(process.env.DATABASE_URL!);

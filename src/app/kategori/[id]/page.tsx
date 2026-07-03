@@ -3,8 +3,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getSession } from '@/lib/auth'
 
-export const revalidate = 60
-
 export default async function CategoryPage({ params }: { params: Promise<{ id: string }> }) {
   const { id: categoryId } = await params;
 

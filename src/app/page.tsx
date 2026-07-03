@@ -1,7 +1,7 @@
 import { sql } from '@/lib/db'
 import Link from 'next/link'
 
-export const revalidate = 60 // Revalidate every 60 seconds
+
 
 export default async function Home() {
   // Fetch categories from Neon DB

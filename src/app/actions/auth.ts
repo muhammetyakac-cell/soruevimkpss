@@ -1,7 +1,7 @@
 'use server'
 
 import { sql } from '@/lib/db';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { createSession, destroySession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 

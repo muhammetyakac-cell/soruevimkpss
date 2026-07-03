@@ -2,8 +2,6 @@ import { sql } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import QuizClient from '@/components/QuizClient'
 
-export const revalidate = 60
-
 export default async function TestPage({ params }: { params: Promise<{ category: string, id: string }> }) {
   const { category: categoryId, id: testId } = await params;
   const testIndex = parseInt(testId);

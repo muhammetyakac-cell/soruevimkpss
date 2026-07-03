@@ -2,8 +2,6 @@ import { sql } from '@/lib/db'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
-export const revalidate = 60
-
 export default async function SoruPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const qId = parseInt(id);
