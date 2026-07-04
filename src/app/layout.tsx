@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { getSession } from '@/lib/auth'
 import LogoutButton from '@/components/LogoutButton'
 import SearchBar from '@/components/SearchBar'
+import { Analytics } from '@vercel/analytics/next'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://www.kpssevim.blog'),
@@ -107,6 +108,7 @@ export default async function RootLayout({
             &copy; {new Date().getFullYear()} SoruEvim KPSS. Tüm hakları saklıdır.
           </div>
         </footer>
+        <Analytics />
       </body>
     </html>
   )
