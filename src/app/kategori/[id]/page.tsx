@@ -13,9 +13,9 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
   }
   const category = cats[0];
 
-  // Soruları çek
-  const questions = await sql`SELECT id, question FROM questions WHERE category_id = ${categoryId} ORDER BY id ASC`;
-  const totalQuestions = questions.length;
+  // Soru sayısını çek (Sadece COUNT ile network tasarrufu)
+  const countRes = await sql`SELECT COUNT(*) FROM questions WHERE category_id = ${categoryId}`;
+  const totalQuestions = parseInt(countRes[0].count);
   const totalTests = Math.ceil(totalQuestions / 10);
 
   // SEO metinleri
@@ -30,10 +30,10 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
 
   const tests = [];
   for (let i = 0; i < totalTests; i++) {
-    const startIndex = i * 10;
-    const testQs = questions.slice(startIndex, startIndex + 10);
-    const previewText = testQs.length > 0 ? testQs[0].question.substring(0, 80) + '...' : '';
-    tests.push({ index: i, count: testQs.length, previewText });
+    const isLastTest = i === totalTests - 1;
+    const countInTest = isLastTest && totalQuestions % 10 !== 0 ? totalQuestions % 10 : 10;
+    const previewText = "Bu testteki soruları çözerek bilginizi sınayın...";
+    tests.push({ index: i, count: countInTest, previewText });
   }
 
   const session = await getSession();

@@ -58,13 +58,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     
     // Test sayfaları
     for (const cat of categories) {
-      const tests = await sql`SELECT DISTINCT test_index FROM questions WHERE category_id = ${cat.category_id}`;
-      const testRoutes: MetadataRoute.Sitemap = tests.map((t: any) => ({
-        url: `${baseUrl}/test/${cat.category_id}/${t.test_index}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly',
-        priority: 0.8,
-      }));
+      const countRes = await sql`SELECT COUNT(*) FROM questions WHERE category_id = ${cat.category_id}`;
+      const totalQuestions = parseInt(countRes[0].count);
+      const totalTests = Math.ceil(totalQuestions / 10);
+      
+      const testRoutes: MetadataRoute.Sitemap = [];
+      for (let i = 0; i < totalTests; i++) {
+        testRoutes.push({
+          url: `${baseUrl}/test/${cat.category_id}/${i}`,
+          lastModified: new Date(),
+          changeFrequency: 'monthly',
+          priority: 0.8,
+        });
+      }
       routes.push(...testRoutes);
     }
   } catch (error) {
