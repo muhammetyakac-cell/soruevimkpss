@@ -93,6 +93,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ id: s
               <Link 
                 key={t.index} 
                 href={`/test/${categoryId}/${t.index}`}
+                prefetch={false}
                 style={{ textDecoration: 'none', color: 'inherit' }}
               >
                 <div className="glass-card test-card" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between', cursor: 'pointer', padding: '1.2rem', height: '100%', position: 'relative' }}>
